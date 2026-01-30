@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovation Studio Flow Diagram</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #fafafa;
+            --text: #1a1a1a;
+            --text-light: #666666;
+            --border: #e0e0e0;
+            --accent: #d4442e;
+            --accent-light: #f5e6e3;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, .headline {
+            font-family: 'Libre Baskerville', serif;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            border: 2px solid var(--text);
+            background: var(--white);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--text);
+            color: var(--white);
+        }
+
+        .btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--white);
+        }
+
+        .btn.reset {
+            border-color: var(--text-light);
+            color: var(--text-light);
+        }
+
+        .btn.reset:hover {
+            background: var(--text-light);
+            color: var(--white);
+        }
+
+        /* Main Diagram */
+        .diagram-wrapper {
+            position: relative;
+            width: 100%;
+            min-height: 900px;
+        }
+
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 240px;
+            gap: 60px;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Column Styles */
+        .column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .column.left {
+            padding-top: 0;
+        }
+
+        .column.center {
+            align-items: center;
+        }
+
+        .column.right {
+            padding-top: 40px;
+        }
+
+        /* Entity Box Base */
+        .entity-box {
+            background: var(--white);
+            border: 2px solid var(--text);
+            padding: 28px;
+            width: 100%;
+        }
+
+        .entity-box h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+        }
+
+        .entity-box .label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+
+        .entity-box .label:first-child {
+            margin-top: 0;
+        }
+
+        .entity-box ul {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .entity-box li {
+            padding: 3px 0;
+            color: var(--text);
+        }
+
+        .entity-box li::before {
+            content: "–";
+            margin-right: 8px;
+            color: var(--text-light);
+        }
+
+        /* Investor box spacing */
+        .investors-spacer {
+            height: 60px;
+        }
+
+        /* Center Column Boxes */
+        .center-box {
+            background: var(--white);
+            border: 2px solid var(--text);
+            padding: 28px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .center-box h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .center-box .spec {
+            display: flex;
+            gap: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .center-box .spec-label {
+            font-weight: 600;
+            color: var(--text);
+            min-width: 80px;
+        }
+
+        .center-box .spec-value {
+            color: var(--text-light);
+        }
+
+        /* Decision Box */
+        .decision-box {
+            background: var(--accent-light);
+            border: 2px dashed var(--text);
+            padding: 24px;
+            width: 100%;
+        }
+
+        .decision-box.center-decision {
+            max-width: 320px;
+        }
+
+        .decision-box h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .decision-box h4::before {
+            content: "◆";
+            color: var(--accent);
+        }
+
+        .decision-box .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .decision-box ul {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .decision-box li {
+            padding: 2px 0;
+        }
+
+        .decision-box li::before {
+            content: "–";
+            margin-right: 6px;
+            color: var(--text-light);
+        }
+
+        .decision-box .emphasis {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .decision-box .emphasis::before {
+            color: var(--accent);
+        }
+
+        /* Equity Return Box - Special */
+        .equity-box {
+            background: var(--accent-light);
+            border: 3px solid var(--accent);
+            padding: 24px;
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+        }
+
+        .equity-box h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--accent);
+        }
+
+        .equity-box ul {
+            list-style: none;
+            font-size: 0.88rem;
+        }
+
+        .equity-box li {
+            padding: 3px 0;
+        }
+
+        .equity-box li::before {
+            content: "→";
+            margin-right: 8px;
+            color: var(--accent);
+        }
+
+        /* SVG Layer */
+        .svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        .arrow-path {
+            fill: none;
+            stroke: var(--text);
+            stroke-width: 2;
+            opacity: 0.18;
+            transition: all 0.3s ease;
+        }
+
+        .arrow-path.dashed {
+            stroke-dasharray: 8, 6;
+        }
+
+        .arrow-path.equity {
+            stroke: var(--accent);
+            stroke-dasharray: 10, 6;
+        }
+
+        .arrow-path.active {
+            opacity: 1;
+            stroke-width: 2.5;
+        }
+
+        .arrow-label {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            fill: var(--text-light);
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .arrow-label.active {
+            opacity: 1;
+            fill: var(--text);
+        }
+
+        .arrow-label.equity {
+            fill: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .arrowhead {
+            fill: var(--text);
+            opacity: 0.18;
+            transition: opacity 0.3s ease;
+        }
+
+        .arrowhead.active {
+            opacity: 1;
+        }
+
+        .arrowhead.equity {
+            fill: var(--accent);
+        }
+
+        /* Right column decision box spacing */
+        .right-spacer {
+            height: 140px;
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 80px;
+            padding: 30px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .legend-line {
+            width: 40px;
+            height: 2px;
+            background: var(--text);
+        }
+
+        .legend-line.dashed {
+            background: repeating-linear-gradient(
+                90deg,
+                var(--text) 0,
+                var(--text) 8px,
+                transparent 8px,
+                transparent 14px
+            );
+        }
+
+        .legend-line.equity {
+            height: 3px;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--accent) 0,
+                var(--accent) 10px,
+                transparent 10px,
+                transparent 16px
+            );
+        }
+
+        .legend-diamond {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        /* Risk Mitigation Section */
+        .risk-section {
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 1px solid var(--border);
+        }
+
+        .risk-section h2 {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 50px;
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .risk-card {
+            padding: 32px;
+            background: var(--white);
+            border: 2px solid var(--border);
+        }
+
+        .risk-card h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .risk-card ul {
+            list-style: none;
+        }
+
+        .risk-card li {
+            font-size: 0.9rem;
+            padding: 8px 0;
+            color: var(--text);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .risk-card li:last-child {
+            border-bottom: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .diagram-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .column {
+                align-items: center;
+            }
+
+            .column.left,
+            .column.right {
+                padding-top: 0;
+            }
+
+            .investors-spacer,
+            .right-spacer {
+                display: none;
+            }
+
+            .svg-layer {
+                display: none;
+            }
+
+            .entity-box,
+            .center-box,
+            .decision-box,
+            .equity-box {
+                max-width: 420px;
+            }
+
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 8px 14px;
+                font-size: 0.8rem;
+            }
+
+            .legend {
+                gap: 24px;
+            }
+        }
+
+        /* Animation for flow */
+        @keyframes flowPulse {
+            0%, 100% { stroke-width: 2.5; opacity: 1; }
+            50% { stroke-width: 4; opacity: 1; }
+        }
+
+        .arrow-path.animating {
+            animation: flowPulse 0.8s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Innovation Studio Model</h1>
+            <p>Flow of capital, research, and returns between stakeholders</p>
+        </header>
+
+        <div class="controls">
+            <button class="btn" data-path="donor">Donor Path</button>
+            <button class="btn" data-path="investor">Investor Path</button>
+            <button class="btn" data-path="research">Research Flow</button>
+            <button class="btn" data-path="equity">Equity Loop</button>
+            <button class="btn" data-path="animate">Animate Flow</button>
+            <button class="btn reset" data-path="reset">Reset</button>
+        </div>
+
+        <div class="diagram-wrapper" id="diagram-wrapper">
+            <!-- SVG Arrow Layer - will be populated by JS -->
+            <svg class="svg-layer" id="svg-layer">
+                <defs>
+                    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+                        <polygon points="0 0, 12 4, 0 8" class="arrowhead"/>
+                    </marker>
+                    <marker id="arrowhead-equity" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
+                        <polygon points="0 0, 12 4, 0 8" class="arrowhead equity"/>
+                    </marker>
+                </defs>
+                <g id="arrows-group"></g>
+            </svg>
+
+            <!-- Content Grid -->
+            <div class="diagram-grid">
+                <!-- LEFT COLUMN: Stakeholders -->
+                <div class="column left">
+                    <div class="entity-box" id="donors-box">
+                        <h3>Donors</h3>
+                        <p class="label">Who</p>
+                        <ul>
+                            <li>Families</li>
+                            <li>Multi-family offices</li>
+                            <li>Foundations</li>
+                            <li>DAFs</li>
+                        </ul>
+                        <p class="label">Receive</p>
+                        <ul>
+                            <li>Research findings</li>
+                            <li>Solution proposals</li>
+                            <li>Tax deductions</li>
+                            <li>Deal pipeline visibility</li>
+                        </ul>
+                    </div>
+
+                    <div class="investors-spacer"></div>
+
+                    <div class="entity-box" id="investors-box">
+                        <h3>Investors</h3>
+                        <p class="label">Who</p>
+                        <ul>
+                            <li>Multi-family offices</li>
+                            <li>Patient capital providers</li>
+                            <li>Climate organizations</li>
+                        </ul>
+                        <p class="label">Receive</p>
+                        <ul>
+                            <li>Financial returns</li>
+                            <li>De-risked investments</li>
+                            <li>Traditional timeline potential</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- CENTER COLUMN: Innovation Engine -->
+                <div class="column center">
+                    <div class="center-box" id="nonprofit-box">
+                        <h3>501(c)(3) Research Arm</h3>
+                        <div class="spec">
+                            <span class="spec-label">Owns:</span>
+                            <span class="spec-value">All research IP (perpetual)</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Does:</span>
+                            <span class="spec-value">Problem-focused research</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Governs:</span>
+                            <span class="spec-value">Research priorities (no investor input)</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Board:</span>
+                            <span class="spec-value">ED sits on for-profit boards</span>
+                        </div>
+                    </div>
+
+                    <div class="decision-box center-decision" id="decision-product">
+                        <h4>Product Advancement</h4>
+                        <p class="label">Criteria</p>
+                        <ul>
+                            <li>PMF validated</li>
+                            <li>Funding secured</li>
+                            <li>Ready to scale</li>
+                        </ul>
+                        <p class="label" style="margin-top: 12px;">Controlled By</p>
+                        <p style="font-size: 0.85rem;">For-profit board (includes 501c3 ED)</p>
+                    </div>
+
+                    <div class="center-box" id="forprofit-box">
+                        <h3>For-Profit Entity</h3>
+                        <div class="spec">
+                            <span class="spec-label">Owns:</span>
+                            <span class="spec-value">Product/Tech IP</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Does:</span>
+                            <span class="spec-value">Builds tech, products, scale</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Structure:</span>
+                            <span class="spec-value">Umbrella entity (can spin out)</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label"></span>
+                            <span class="spec-value">Multiple for-profits possible</span>
+                        </div>
+                    </div>
+
+                    <div class="equity-box" id="equity-box">
+                        <h4>↩ 2% Equity Returns to 501(c)(3)</h4>
+                        <ul>
+                            <li>For-profit grants 2% equity per new IP</li>
+                            <li>Equity = "payment" for IP access</li>
+                            <li>Creates sustainable funding loop</li>
+                            <li>Funds future research</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN: Decision Points -->
+                <div class="column right">
+                    <div class="decision-box" id="decision-research">
+                        <h4>Research Priorities</h4>
+                        <p class="label">Controlled By</p>
+                        <ul>
+                            <li>Donors + 501(c)(3)</li>
+                            <li class="emphasis">NO Investors</li>
+                        </ul>
+                    </div>
+
+                    <div class="right-spacer"></div>
+
+                    <div class="decision-box" id="decision-ip">
+                        <h4>IP Ownership</h4>
+                        <div style="font-size: 0.85rem; margin-bottom: 8px;">
+                            <span style="font-weight: 600;">Research IP:</span>
+                            <span style="color: var(--text-light);"> 501(c)(3) owns forever</span>
+                        </div>
+                        <div style="font-size: 0.85rem;">
+                            <span style="font-weight: 600;">Product IP:</span>
+                            <span style="color: var(--text-light);"> For-Profit owns</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-line"></div>
+                <span>Money flow</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line dashed"></div>
+                <span>Return flow</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-line equity"></div>
+                <span>2% Equity return</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-diamond">◆</span>
+                <span>Decision point</span>
+            </div>
+        </div>
+
+        <!-- Risk Mitigation Section -->
+        <section class="risk-section">
+            <h2>Risk Mitigation</h2>
+            <div class="risk-grid">
+                <div class="risk-card">
+                    <h4>For Investors</h4>
+                    <ul>
+                        <li>Grant-funded research de-risks PMF</li>
+                        <li>Traditional VC pays for PMF with equity</li>
+                        <li>Studio model: grants cover discovery</li>
+                        <li>Patient timeline, traditional returns</li>
+                    </ul>
+                </div>
+                <div class="risk-card">
+                    <h4>For Donors</h4>
+                    <ul>
+                        <li>Research creates real solutions</li>
+                        <li>501(c)(3) equity stake in success</li>
+                        <li>Deal pipeline visibility</li>
+                        <li>Follow-on investment opportunities</li>
+                    </ul>
+                </div>
+                <div class="risk-card">
+                    <h4>For The Studio</h4>
+                    <ul>
+                        <li>Diversified funding sources</li>
+                        <li>Research can fail without pressure</li>
+                        <li>Products launch with validation</li>
+                        <li>2% equity creates sustainable loop</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.getElementById('diagram-wrapper');
+            const svg = document.getElementById('svg-layer');
+            const arrowsGroup = document.getElementById('arrows-group');
+            const buttons = document.querySelectorAll('.btn[data-path]');
+
+            // Element references
+            const elements = {
+                donors: document.getElementById('donors-box'),
+                nonprofit: document.getElementById('nonprofit-box'),
+                decision: document.getElementById('decision-product'),
+                forprofit: document.getElementById('forprofit-box'),
+                investors: document.getElementById('investors-box'),
+                equity: document.getElementById('equity-box'),
+                researchDecision: document.getElementById('decision-research'),
+                ipDecision: document.getElementById('decision-ip')
+            };
+
+            // Get element center and edge positions relative to wrapper
+            function getPos(el, edge = 'center') {
+                const wrapperRect = wrapper.getBoundingClientRect();
+                const rect = el.getBoundingClientRect();
+                const x = rect.left - wrapperRect.left;
+                const y = rect.top - wrapperRect.top;
+                const w = rect.width;
+                const h = rect.height;
+
+                switch(edge) {
+                    case 'right': return { x: x + w, y: y + h/2 };
+                    case 'left': return { x: x, y: y + h/2 };
+                    case 'top': return { x: x + w/2, y: y };
+                    case 'bottom': return { x: x + w/2, y: y + h };
+                    case 'top-right': return { x: x + w, y: y };
+                    case 'bottom-left': return { x: x, y: y + h };
+                    default: return { x: x + w/2, y: y + h/2 };
+                }
+            }
+
+            function createArrow(id, d, className = '', labelText = '', labelPos = null) {
+                // Create path
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('id', id);
+                path.setAttribute('d', d);
+                path.setAttribute('class', 'arrow-path ' + className);
+
+                if (className.includes('equity')) {
+                    path.setAttribute('marker-end', 'url(#arrowhead-equity)');
+                } else {
+                    path.setAttribute('marker-end', 'url(#arrowhead)');
+                }
+
+                arrowsGroup.appendChild(path);
+
+                // Create label if provided
+                if (labelText && labelPos) {
+                    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    label.setAttribute('class', 'arrow-label' + (className.includes('equity') ? ' equity' : ''));
+                    label.setAttribute('x', labelPos.x);
+                    label.setAttribute('y', labelPos.y);
+                    if (labelPos.rotate) {
+                        label.setAttribute('transform', `rotate(${labelPos.rotate} ${labelPos.x} ${labelPos.y})`);
+                    }
+                    label.textContent = labelText;
+                    arrowsGroup.appendChild(label);
+                }
+
+                return path;
+            }
+
+            function drawArrows() {
+                // Clear existing arrows
+                arrowsGroup.innerHTML = '';
+
+                // Get positions
+                const donors = getPos(elements.donors, 'right');
+                const donorsLeft = getPos(elements.donors, 'left');
+                const nonprofitLeft = getPos(elements.nonprofit, 'left');
+                const nonprofitBottom = getPos(elements.nonprofit, 'bottom');
+                const decisionTop = getPos(elements.decision, 'top');
+                const decisionBottom = getPos(elements.decision, 'bottom');
+                const forprofitTop = getPos(elements.forprofit, 'top');
+                const forprofitLeft = getPos(elements.forprofit, 'left');
+                const forprofitBottom = getPos(elements.forprofit, 'bottom');
+                const investors = getPos(elements.investors, 'right');
+                const equityBottom = getPos(elements.equity, 'bottom');
+                const equityLeft = getPos(elements.equity, 'left');
+
+                // Arrow offsets for return arrows
+                const offset = 15;
+
+                // Arrow 1: Donors → 501(c)(3) (Grants)
+                const a1Start = { x: donors.x, y: donors.y - offset };
+                const a1End = { x: nonprofitLeft.x, y: nonprofitLeft.y - offset };
+                createArrow('arrow1',
+                    `M ${a1Start.x} ${a1Start.y} L ${a1End.x - 10} ${a1End.y}`,
+                    '',
+                    'Grants',
+                    { x: (a1Start.x + a1End.x) / 2, y: a1Start.y - 8 }
+                );
+
+                // Arrow 2: 501(c)(3) → Donors (Findings - return)
+                const a2Start = { x: nonprofitLeft.x, y: nonprofitLeft.y + offset };
+                const a2End = { x: donors.x, y: donors.y + offset };
+                createArrow('arrow2',
+                    `M ${a2Start.x} ${a2Start.y} L ${a2End.x + 10} ${a2End.y}`,
+                    'dashed',
+                    'Findings',
+                    { x: (a2Start.x + a2End.x) / 2, y: a2Start.y + 16 }
+                );
+
+                // Arrow 3: 501(c)(3) → Decision Point (IP)
+                createArrow('arrow3',
+                    `M ${nonprofitBottom.x} ${nonprofitBottom.y} L ${decisionTop.x} ${decisionTop.y - 10}`,
+                    '',
+                    'IP',
+                    { x: nonprofitBottom.x + 12, y: (nonprofitBottom.y + decisionTop.y) / 2 }
+                );
+
+                // Arrow 4: Decision Point → For-Profit (Approved)
+                createArrow('arrow4',
+                    `M ${decisionBottom.x} ${decisionBottom.y} L ${forprofitTop.x} ${forprofitTop.y - 10}`,
+                    '',
+                    'Approved',
+                    { x: decisionBottom.x + 12, y: (decisionBottom.y + forprofitTop.y) / 2 }
+                );
+
+                // Arrow 5: Investors → For-Profit (Capital)
+                const a5Start = { x: investors.x, y: investors.y - offset };
+                const a5End = { x: forprofitLeft.x, y: forprofitLeft.y - offset };
+                createArrow('arrow5',
+                    `M ${a5Start.x} ${a5Start.y} L ${a5End.x - 10} ${a5End.y}`,
+                    '',
+                    'Capital',
+                    { x: (a5Start.x + a5End.x) / 2, y: a5Start.y - 8 }
+                );
+
+                // Arrow 6: For-Profit → Investors (Returns)
+                const a6Start = { x: forprofitLeft.x, y: forprofitLeft.y + offset };
+                const a6End = { x: investors.x, y: investors.y + offset };
+                createArrow('arrow6',
+                    `M ${a6Start.x} ${a6Start.y} L ${a6End.x + 10} ${a6End.y}`,
+                    'dashed',
+                    'Returns',
+                    { x: (a6Start.x + a6End.x) / 2, y: a6Start.y + 16 }
+                );
+
+                // Arrow 7: Equity Return Loop (curves from equity box back up to nonprofit)
+                const loopPadding = 40;
+                const leftEdge = donorsLeft.x - loopPadding;
+                createArrow('arrow7',
+                    `M ${equityLeft.x} ${equityLeft.y}
+                     L ${leftEdge + 30} ${equityLeft.y}
+                     Q ${leftEdge} ${equityLeft.y}, ${leftEdge} ${equityLeft.y - 30}
+                     L ${leftEdge} ${nonprofitLeft.y + 30}
+                     Q ${leftEdge} ${nonprofitLeft.y}, ${leftEdge + 30} ${nonprofitLeft.y}
+                     L ${nonprofitLeft.x - 10} ${nonprofitLeft.y}`,
+                    'equity',
+                    '2% EQUITY',
+                    { x: leftEdge - 8, y: (equityLeft.y + nonprofitLeft.y) / 2, rotate: -90 }
+                );
+
+                // Update SVG viewBox based on content
+                const wrapperRect = wrapper.getBoundingClientRect();
+                svg.setAttribute('viewBox', `0 0 ${wrapperRect.width} ${wrapperRect.height}`);
+                svg.style.width = wrapperRect.width + 'px';
+                svg.style.height = wrapperRect.height + 'px';
+            }
+
+            // Path definitions for highlighting
+            const paths = {
+                donor: ['arrow1', 'arrow2'],
+                investor: ['arrow5', 'arrow6'],
+                research: ['arrow1', 'arrow3', 'arrow4'],
+                equity: ['arrow4', 'arrow7']
+            };
+
+            function resetAll() {
+                document.querySelectorAll('.arrow-path').forEach(arrow => {
+                    arrow.classList.remove('active', 'animating');
+                });
+                document.querySelectorAll('.arrow-label').forEach(label => {
+                    label.classList.remove('active');
+                });
+                document.querySelectorAll('.arrowhead').forEach(head => {
+                    head.classList.remove('active');
+                });
+                buttons.forEach(btn => btn.classList.remove('active'));
+            }
+
+            function activatePath(pathName) {
+                resetAll();
+                if (paths[pathName]) {
+                    paths[pathName].forEach(arrowId => {
+                        const arrow = document.getElementById(arrowId);
+                        if (arrow) {
+                            arrow.classList.add('active');
+                            // Find corresponding label (next sibling text element)
+                            const label = arrow.nextElementSibling;
+                            if (label && label.tagName === 'text') {
+                                label.classList.add('active');
+                            }
+                        }
+                    });
+                }
+            }
+
+            async function animateFlow() {
+                resetAll();
+                const sequence = ['arrow1', 'arrow2', 'arrow3', 'arrow4', 'arrow5', 'arrow6', 'arrow7'];
+
+                for (let i = 0; i < sequence.length; i++) {
+                    const arrow = document.getElementById(sequence[i]);
+                    if (arrow) {
+                        arrow.classList.add('active', 'animating');
+                        const label = arrow.nextElementSibling;
+                        if (label && label.tagName === 'text') {
+                            label.classList.add('active');
+                        }
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                        arrow.classList.remove('animating');
+                    }
+                }
+            }
+
+            // Event listeners
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const path = this.dataset.path;
+
+                    if (path === 'reset') {
+                        resetAll();
+                        return;
+                    }
+
+                    if (path === 'animate') {
+                        this.classList.add('active');
+                        animateFlow();
+                        return;
+                    }
+
+                    if (this.classList.contains('active')) {
+                        resetAll();
+                    } else {
+                        activatePath(path);
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Draw arrows on load and resize
+            drawArrows();
+            window.addEventListener('resize', () => {
+                drawArrows();
+                resetAll();
+            });
+        });
+    </script>
+</body>
+</html>
