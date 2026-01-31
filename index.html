@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Innovation Studio Flow Diagram</title>
+    <title>Innovation Studio Model</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,14 +15,17 @@
         }
 
         :root {
-            --bg: #fafafa;
+            --bg: #ffffff;
+            --bg-alt: #f7f7f7;
             --text: #1a1a1a;
-            --text-light: #666666;
-            --border: #e0e0e0;
-            --accent: #d4442e;
-            --accent-light: #f5e6e3;
-            --white: #ffffff;
-            --panel-width: 380px;
+            --text-light: #6b6b6b;
+            --text-muted: #999999;
+            --border: #e5e5e5;
+            --accent: #e8634f;
+            --accent-light: #fef6f5;
+            --header-bg: #2d2d2d;
+            --header-text: #ffffff;
+            --panel-width: 400px;
         }
 
         html {
@@ -30,53 +33,168 @@
         }
 
         body {
-            font-family: 'Work Sans', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.5;
+            line-height: 1.6;
             min-height: 100vh;
+            font-size: 15px;
         }
 
         body.panel-open {
             overflow: hidden;
         }
 
-        h1, h2, h3, h4, .headline {
-            font-family: 'Libre Baskerville', serif;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 40px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 400;
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
-        }
-
-        header p {
-            color: var(--text-light);
-            font-size: 1.1rem;
-        }
-
-        /* Sticky Controls */
-        .controls-wrapper {
+        /* Header */
+        .site-header {
+            background: var(--header-bg);
+            padding: 0 40px;
             position: sticky;
             top: 0;
-            background: var(--bg);
-            z-index: 100;
-            padding: 20px 0;
-            margin-bottom: 30px;
+            z-index: 200;
+        }
+
+        .header-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--header-text);
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .brand-mark {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .header-nav a {
+            color: var(--header-text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .header-nav a:hover,
+        .header-nav a.active {
+            opacity: 1;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 60px;
+            margin-bottom: 80px;
+            align-items: start;
+        }
+
+        .hero-content {
+            padding-top: 20px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .section-label::before {
+            content: "// ";
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-description {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Stats Box */
+        .stats-box {
+            background: var(--bg-alt);
+            padding: 28px;
+        }
+
+        .stats-box-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
             border-bottom: 1px solid var(--border);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* Controls */
+        .controls-section {
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            margin: 0 -40px 60px;
+            position: sticky;
+            top: 60px;
+            z-index: 100;
         }
 
         .controls {
@@ -84,78 +202,97 @@
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .btn {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
             padding: 10px 20px;
-            border: 2px solid var(--text);
-            background: var(--white);
+            border: 1px solid var(--border);
+            background: var(--bg);
             color: var(--text);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .btn:hover {
-            background: var(--text);
-            color: var(--white);
+            border-color: var(--text);
         }
 
         .btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: var(--white);
-        }
-
-        .btn.reset {
-            border-color: var(--text-light);
-            color: var(--text-light);
-        }
-
-        .btn.reset:hover {
-            background: var(--text-light);
-            color: var(--white);
+            background: var(--text);
+            border-color: var(--text);
+            color: var(--bg);
         }
 
         .btn.tour {
             background: var(--accent);
             border-color: var(--accent);
-            color: var(--white);
+            color: white;
         }
 
         .btn.tour:hover {
-            background: #b8392a;
-            border-color: #b8392a;
+            background: #d4533f;
+            border-color: #d4533f;
         }
 
-        /* Main Diagram */
+        .btn.reset {
+            color: var(--text-muted);
+            border-color: var(--border);
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* Diagram */
         .diagram-wrapper {
             position: relative;
             width: 100%;
-            min-height: 900px;
+            min-height: 850px;
+            margin-bottom: 80px;
         }
 
         .diagram-grid {
             display: grid;
-            grid-template-columns: 280px 1fr 240px;
-            gap: 60px;
+            grid-template-columns: 260px 1fr 220px;
+            gap: 50px;
             position: relative;
             z-index: 2;
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
-        /* Column Styles */
         .column {
             display: flex;
             flex-direction: column;
-            gap: 30px;
-        }
-
-        .column.left {
-            padding-top: 0;
+            gap: 24px;
         }
 
         .column.center {
@@ -163,180 +300,183 @@
         }
 
         .column.right {
-            padding-top: 40px;
+            padding-top: 30px;
         }
 
-        /* Entity Box Base */
-        .entity-box {
-            background: var(--white);
-            border: 2px solid var(--text);
-            padding: 28px;
+        /* Entity Cards */
+        .entity-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 24px;
             width: 100%;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             position: relative;
         }
 
-        .entity-box::after {
-            content: "Click for details →";
+        .entity-card::before {
+            content: "";
             position: absolute;
-            bottom: 8px;
-            right: 12px;
-            font-size: 0.7rem;
-            color: var(--text-light);
-            opacity: 0;
-            transition: opacity 0.2s ease;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: transparent;
+            transition: background 0.25s ease;
         }
 
-        .entity-box:hover::after {
-            opacity: 1;
-        }
-
-        .entity-box:hover {
+        .entity-card:hover {
             border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        .entity-box.highlighted {
+        .entity-card:hover::before {
+            background: var(--accent);
+        }
+
+        .entity-card.highlighted {
             border-color: var(--accent);
             background: var(--accent-light);
-            box-shadow: 0 0 0 4px rgba(212, 68, 46, 0.15);
         }
 
-        .entity-box h3 {
-            font-size: 1.15rem;
+        .entity-card.highlighted::before {
+            background: var(--accent);
+        }
+
+        .entity-card h3 {
+            font-size: 1rem;
             font-weight: 700;
             margin-bottom: 16px;
             letter-spacing: -0.01em;
         }
 
-        .entity-box .label {
-            font-size: 0.75rem;
+        .entity-card .card-label {
+            font-size: 0.65rem;
             font-weight: 600;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-light);
-            margin-top: 14px;
-            margin-bottom: 6px;
-        }
-
-        .entity-box .label:first-child {
-            margin-top: 0;
-        }
-
-        .entity-box ul {
-            list-style: none;
-            font-size: 0.9rem;
-        }
-
-        .entity-box li {
-            padding: 3px 0;
-            color: var(--text);
-        }
-
-        .entity-box li::before {
-            content: "–";
-            margin-right: 8px;
-            color: var(--text-light);
-        }
-
-        /* Investor box spacing */
-        .investors-spacer {
-            height: 60px;
-        }
-
-        /* Center Column Boxes */
-        .center-box {
-            background: var(--white);
-            border: 2px solid var(--text);
-            padding: 28px;
-            width: 100%;
-            max-width: 400px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .center-box::after {
-            content: "Click for details →";
-            position: absolute;
-            bottom: 8px;
-            right: 12px;
-            font-size: 0.7rem;
-            color: var(--text-light);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        .center-box:hover::after {
-            opacity: 1;
-        }
-
-        .center-box:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .center-box.highlighted {
-            border-color: var(--accent);
-            background: var(--accent-light);
-            box-shadow: 0 0 0 4px rgba(212, 68, 46, 0.15);
-        }
-
-        .center-box h3 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 18px;
-        }
-
-        .center-box .spec {
-            display: flex;
-            gap: 8px;
-            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 16px;
             margin-bottom: 8px;
         }
 
-        .center-box .spec-label {
-            font-weight: 600;
-            color: var(--text);
-            min-width: 80px;
+        .entity-card .card-label:first-of-type {
+            margin-top: 0;
         }
 
-        .center-box .spec-value {
+        .entity-card ul {
+            list-style: none;
+        }
+
+        .entity-card li {
+            font-size: 0.85rem;
+            padding: 4px 0;
+            color: var(--text-light);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .entity-card li::before {
+            content: "→";
+            color: var(--accent);
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .investors-spacer {
+            height: 50px;
+        }
+
+        /* Center Cards */
+        .center-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 28px;
+            width: 100%;
+            max-width: 380px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .center-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: transparent;
+            transition: background 0.25s ease;
+        }
+
+        .center-card:hover {
+            border-color: var(--accent);
+        }
+
+        .center-card:hover::before {
+            background: var(--accent);
+        }
+
+        .center-card.highlighted {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .center-card.highlighted::before {
+            background: var(--accent);
+        }
+
+        .center-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .center-card .spec {
+            display: grid;
+            grid-template-columns: 70px 1fr;
+            gap: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .center-card .spec-label {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .center-card .spec-value {
             color: var(--text-light);
         }
 
-        /* Decision Box */
-        .decision-box {
-            background: var(--accent-light);
-            border: 2px dashed var(--text);
-            padding: 24px;
+        /* Decision Cards */
+        .decision-card {
+            background: var(--bg-alt);
+            border: 1px dashed var(--border);
+            padding: 22px;
             width: 100%;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
-        .decision-box:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .decision-box.highlighted {
+        .decision-card:hover {
             border-color: var(--accent);
             border-style: solid;
-            box-shadow: 0 0 0 4px rgba(212, 68, 46, 0.15);
         }
 
-        .decision-box.center-decision {
-            max-width: 320px;
+        .decision-card.highlighted {
+            border-color: var(--accent);
+            border-style: solid;
+            background: var(--accent-light);
         }
 
-        .decision-box h4 {
-            font-size: 1rem;
+        .decision-card.center-decision {
+            max-width: 300px;
+        }
+
+        .decision-card h4 {
+            font-size: 0.9rem;
             font-weight: 700;
             margin-bottom: 14px;
             display: flex;
@@ -344,85 +484,84 @@
             gap: 8px;
         }
 
-        .decision-box h4::before {
+        .decision-card h4::before {
             content: "◆";
             color: var(--accent);
-        }
-
-        .decision-box .label {
             font-size: 0.7rem;
+        }
+
+        .decision-card .card-label {
+            font-size: 0.6rem;
             font-weight: 600;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-light);
-            margin-bottom: 6px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
         }
 
-        .decision-box ul {
+        .decision-card ul {
             list-style: none;
-            font-size: 0.85rem;
         }
 
-        .decision-box li {
-            padding: 2px 0;
-        }
-
-        .decision-box li::before {
-            content: "–";
-            margin-right: 6px;
+        .decision-card li {
+            font-size: 0.8rem;
+            padding: 3px 0;
             color: var(--text-light);
         }
 
-        .decision-box .emphasis {
+        .decision-card li::before {
+            content: "– ";
+            color: var(--text-muted);
+        }
+
+        .decision-card .emphasis {
             font-weight: 600;
             color: var(--accent);
         }
 
-        .decision-box .emphasis::before {
-            color: var(--accent);
-        }
-
-        /* Equity Return Box - Special */
-        .equity-box {
-            background: var(--accent-light);
-            border: 3px solid var(--accent);
-            padding: 24px;
+        /* Equity Card */
+        .equity-card {
+            background: var(--accent);
+            color: white;
+            padding: 26px;
             width: 100%;
-            max-width: 380px;
-            position: relative;
+            max-width: 360px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
-        .equity-box:hover {
+        .equity-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 68, 46, 0.2);
+            box-shadow: 0 8px 24px rgba(232, 99, 79, 0.3);
         }
 
-        .equity-box.highlighted {
-            box-shadow: 0 0 0 4px rgba(212, 68, 46, 0.3);
+        .equity-card.highlighted {
+            box-shadow: 0 8px 24px rgba(232, 99, 79, 0.4);
         }
 
-        .equity-box h4 {
-            font-size: 1.05rem;
+        .equity-card h4 {
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 14px;
-            color: var(--accent);
+            margin-bottom: 16px;
         }
 
-        .equity-box ul {
+        .equity-card ul {
             list-style: none;
-            font-size: 0.88rem;
         }
 
-        .equity-box li {
-            padding: 3px 0;
+        .equity-card li {
+            font-size: 0.85rem;
+            padding: 4px 0;
+            opacity: 0.95;
         }
 
-        .equity-box li::before {
-            content: "→";
-            margin-right: 8px;
-            color: var(--accent);
+        .equity-card li::before {
+            content: "↩ ";
+            opacity: 0.7;
+        }
+
+        .right-spacer {
+            height: 100px;
         }
 
         /* SVG Layer */
@@ -440,34 +579,34 @@
         .arrow-path {
             fill: none;
             stroke: var(--text);
-            stroke-width: 2;
-            opacity: 0.18;
+            stroke-width: 1.5;
+            opacity: 0.12;
             transition: all 0.3s ease;
         }
 
         .arrow-path.dashed {
-            stroke-dasharray: 8, 6;
+            stroke-dasharray: 6, 5;
         }
 
         .arrow-path.equity {
             stroke: var(--accent);
-            stroke-dasharray: 10, 6;
+            stroke-dasharray: 8, 5;
         }
 
         .arrow-path.active {
             opacity: 1;
-            stroke-width: 2.5;
+            stroke-width: 2;
         }
 
         .arrow-label {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            fill: var(--text-light);
-            opacity: 0.5;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 500;
+            fill: var(--text-muted);
+            opacity: 0.4;
             transition: opacity 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.05em;
         }
 
         .arrow-label.active {
@@ -477,27 +616,15 @@
 
         .arrow-label.equity {
             fill: var(--accent);
-            font-size: 12px;
-            font-weight: 700;
         }
 
         .arrowhead {
             fill: var(--text);
-            opacity: 0.18;
-            transition: opacity 0.3s ease;
-        }
-
-        .arrowhead.active {
-            opacity: 1;
+            opacity: 0.12;
         }
 
         .arrowhead.equity {
             fill: var(--accent);
-        }
-
-        /* Right column decision box spacing */
-        .right-spacer {
-            height: 140px;
         }
 
         /* Legend */
@@ -505,9 +632,9 @@
             display: flex;
             justify-content: center;
             gap: 40px;
-            margin-top: 80px;
-            padding: 30px;
+            padding: 30px 0;
             border-top: 1px solid var(--border);
+            margin-bottom: 80px;
             flex-wrap: wrap;
         }
 
@@ -515,13 +642,13 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size: 0.85rem;
-            color: var(--text-light);
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
         .legend-line {
-            width: 40px;
-            height: 2px;
+            width: 32px;
+            height: 1.5px;
             background: var(--text);
         }
 
@@ -529,56 +656,46 @@
             background: repeating-linear-gradient(
                 90deg,
                 var(--text) 0,
-                var(--text) 8px,
-                transparent 8px,
-                transparent 14px
+                var(--text) 6px,
+                transparent 6px,
+                transparent 11px
             );
         }
 
         .legend-line.equity {
-            height: 3px;
+            height: 2px;
             background: repeating-linear-gradient(
                 90deg,
                 var(--accent) 0,
-                var(--accent) 10px,
-                transparent 10px,
-                transparent 16px
+                var(--accent) 8px,
+                transparent 8px,
+                transparent 13px
             );
         }
 
         .legend-diamond {
             color: var(--accent);
-            font-size: 1rem;
+            font-size: 0.7rem;
         }
 
-        /* Risk Mitigation Section */
+        /* Risk Section */
         .risk-section {
-            margin-top: 80px;
-            padding-top: 60px;
-            border-top: 1px solid var(--border);
-        }
-
-        .risk-section h2 {
-            text-align: center;
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-bottom: 50px;
+            margin-bottom: 80px;
         }
 
         .risk-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            gap: 24px;
         }
 
         .risk-card {
             padding: 32px;
-            background: var(--white);
-            border: 2px solid var(--border);
+            background: var(--bg-alt);
         }
 
         .risk-card h4 {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             margin-bottom: 20px;
             padding-bottom: 16px;
@@ -590,9 +707,9 @@
         }
 
         .risk-card li {
-            font-size: 0.9rem;
-            padding: 8px 0;
-            color: var(--text);
+            font-size: 0.85rem;
+            padding: 10px 0;
+            color: var(--text-light);
             border-bottom: 1px solid var(--border);
         }
 
@@ -600,14 +717,14 @@
             border-bottom: none;
         }
 
-        /* Slide-out Panel */
+        /* Panel */
         .panel-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -626,8 +743,8 @@
             width: var(--panel-width);
             max-width: 90vw;
             height: 100%;
-            background: var(--white);
-            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+            background: var(--bg);
+            box-shadow: -4px 0 30px rgba(0, 0, 0, 0.15);
             transform: translateX(100%);
             transition: transform 0.3s ease;
             z-index: 1001;
@@ -641,16 +758,16 @@
         .panel-header {
             position: sticky;
             top: 0;
-            background: var(--white);
+            background: var(--header-bg);
+            color: var(--header-text);
             padding: 24px 28px;
-            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .panel-header h3 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 700;
         }
 
@@ -659,17 +776,18 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--text-light);
+            color: var(--header-text);
+            opacity: 0.7;
             padding: 4px 8px;
-            transition: color 0.2s ease;
+            transition: opacity 0.2s ease;
         }
 
         .panel-close:hover {
-            color: var(--accent);
+            opacity: 1;
         }
 
         .panel-content {
-            padding: 28px;
+            padding: 32px 28px;
         }
 
         .panel-section {
@@ -681,18 +799,22 @@
         }
 
         .panel-section h4 {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
             color: var(--accent);
             margin-bottom: 12px;
         }
 
+        .panel-section h4::before {
+            content: "// ";
+        }
+
         .panel-section p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--text-light);
         }
 
         .panel-section ul {
@@ -700,9 +822,10 @@
         }
 
         .panel-section li {
-            font-size: 0.95rem;
-            padding: 8px 0;
+            font-size: 0.9rem;
+            padding: 10px 0;
             border-bottom: 1px solid var(--border);
+            color: var(--text-light);
         }
 
         .panel-section li:last-child {
@@ -710,31 +833,34 @@
         }
 
         .panel-section li::before {
-            content: "→";
-            margin-right: 10px;
+            content: "→ ";
             color: var(--accent);
+        }
+
+        .panel-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
         }
 
         .panel-tag {
-            display: inline-block;
-            background: var(--accent-light);
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 3px;
-            margin-right: 6px;
-            margin-bottom: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            background: var(--bg-alt);
+            color: var(--text-muted);
         }
 
-        /* Tour Mode */
+        /* Tour */
         .tour-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
@@ -750,11 +876,11 @@
 
         .tour-tooltip {
             position: fixed;
-            background: var(--white);
+            background: var(--bg);
             border: 2px solid var(--accent);
-            padding: 24px;
-            max-width: 340px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            padding: 28px;
+            max-width: 360px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
             z-index: 1002;
             opacity: 0;
             visibility: hidden;
@@ -766,24 +892,25 @@
             visibility: visible;
         }
 
+        .tour-progress {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
+        }
+
         .tour-tooltip h4 {
             font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 12px;
-            color: var(--accent);
         }
 
         .tour-tooltip p {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             line-height: 1.6;
-            margin-bottom: 20px;
-            color: var(--text);
-        }
-
-        .tour-progress {
-            font-size: 0.8rem;
+            margin-bottom: 24px;
             color: var(--text-light);
-            margin-bottom: 16px;
         }
 
         .tour-buttons {
@@ -793,18 +920,18 @@
         }
 
         .tour-btn {
-            font-family: 'Work Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            padding: 8px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 18px;
             border: none;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .tour-btn.secondary {
-            background: var(--bg);
-            color: var(--text);
+            background: var(--bg-alt);
+            color: var(--text-muted);
         }
 
         .tour-btn.secondary:hover {
@@ -813,32 +940,34 @@
 
         .tour-btn.primary {
             background: var(--accent);
-            color: var(--white);
+            color: white;
         }
 
         .tour-btn.primary:hover {
-            background: #b8392a;
+            background: #d4533f;
         }
 
-        /* Highlighted element during tour */
         .tour-highlight {
             position: relative;
             z-index: 950 !important;
-            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
         }
 
         /* Responsive */
         @media (max-width: 1100px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
             .diagram-grid {
                 grid-template-columns: 1fr;
-                gap: 24px;
+                gap: 20px;
             }
 
             .column {
                 align-items: center;
             }
 
-            .column.left,
             .column.right {
                 padding-top: 0;
             }
@@ -852,15 +981,19 @@
                 display: none;
             }
 
-            .entity-box,
-            .center-box,
-            .decision-box,
-            .equity-box {
-                max-width: 420px;
+            .entity-card,
+            .center-card,
+            .decision-card,
+            .equity-card {
+                max-width: 400px;
             }
 
             .risk-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .header-nav {
+                display: none;
             }
 
             .controls {
@@ -869,11 +1002,7 @@
 
             .btn {
                 padding: 8px 14px;
-                font-size: 0.8rem;
-            }
-
-            .legend {
-                gap: 24px;
+                font-size: 0.75rem;
             }
 
             .detail-panel {
@@ -881,10 +1010,9 @@
             }
         }
 
-        /* Animation for flow */
         @keyframes flowPulse {
-            0%, 100% { stroke-width: 2.5; opacity: 1; }
-            50% { stroke-width: 4; opacity: 1; }
+            0%, 100% { stroke-width: 2; opacity: 1; }
+            50% { stroke-width: 3; opacity: 1; }
         }
 
         .arrow-path.animating {
@@ -893,13 +1021,51 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Innovation Studio Model</h1>
-            <p>Flow of capital, research, and returns between stakeholders</p>
-        </header>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <div class="brand-mark"></div>
+                Innovation Studio
+            </div>
+            <nav class="header-nav">
+                <a href="#model" class="active">Model</a>
+                <a href="#risk-section">Risk Mitigation</a>
+            </nav>
+        </div>
+    </header>
 
-        <div class="controls-wrapper">
+    <div class="container">
+        <!-- Hero -->
+        <section class="hero" id="model">
+            <div class="hero-content">
+                <div class="section-label">Catalytic Capital Model</div>
+                <h1>Research creates products. Products fund research. The loop closes.</h1>
+                <p class="hero-description">A new model for innovation that separates discovery (funded by grants) from scaling (funded by investors), with a 2% equity return that makes the nonprofit self-sustaining over time.</p>
+            </div>
+            <div class="stats-box">
+                <div class="stats-box-title">The Model</div>
+                <div class="stat-row">
+                    <span class="stat-label">Discovery</span>
+                    <span class="stat-value">Philanthropy</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Scaling</span>
+                    <span class="stat-value">Investors</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Perpetual loop</span>
+                    <span class="stat-value">2% equity</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Research</span>
+                    <span class="stat-value">Mission-driven</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controls -->
+        <div class="controls-section">
             <div class="controls">
                 <button class="btn tour" data-path="tour">▶ Take Tour</button>
                 <button class="btn" data-path="donor">Donor Path</button>
@@ -910,34 +1076,40 @@
             </div>
         </div>
 
+        <!-- Section Header -->
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <span class="section-title">The Flow</span>
+            <div class="section-line"></div>
+        </div>
+
+        <!-- Diagram -->
         <div class="diagram-wrapper" id="diagram-wrapper">
-            <!-- SVG Arrow Layer - will be populated by JS -->
             <svg class="svg-layer" id="svg-layer">
                 <defs>
-                    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
-                        <polygon points="0 0, 12 4, 0 8" class="arrowhead"/>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" class="arrowhead"/>
                     </marker>
-                    <marker id="arrowhead-equity" markerWidth="12" markerHeight="8" refX="10" refY="4" orient="auto">
-                        <polygon points="0 0, 12 4, 0 8" class="arrowhead equity"/>
+                    <marker id="arrowhead-equity" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" class="arrowhead equity"/>
                     </marker>
                 </defs>
                 <g id="arrows-group"></g>
             </svg>
 
-            <!-- Content Grid -->
             <div class="diagram-grid">
-                <!-- LEFT COLUMN: Stakeholders -->
+                <!-- LEFT -->
                 <div class="column left">
-                    <div class="entity-box" id="donors-box" data-panel="donors">
+                    <div class="entity-card" id="donors-box" data-panel="donors">
                         <h3>Donors</h3>
-                        <p class="label">Who</p>
+                        <p class="card-label">Who</p>
                         <ul>
                             <li>Families</li>
                             <li>Multi-family offices</li>
                             <li>Foundations</li>
                             <li>DAFs</li>
                         </ul>
-                        <p class="label">Receive</p>
+                        <p class="card-label">Receive</p>
                         <ul>
                             <li>Research findings</li>
                             <li>Solution proposals</li>
@@ -948,15 +1120,15 @@
 
                     <div class="investors-spacer"></div>
 
-                    <div class="entity-box" id="investors-box" data-panel="investors">
+                    <div class="entity-card" id="investors-box" data-panel="investors">
                         <h3>Investors</h3>
-                        <p class="label">Who</p>
+                        <p class="card-label">Who</p>
                         <ul>
                             <li>Multi-family offices</li>
                             <li>Patient capital providers</li>
                             <li>Climate organizations</li>
                         </ul>
-                        <p class="label">Receive</p>
+                        <p class="card-label">Receive</p>
                         <ul>
                             <li>Financial returns</li>
                             <li>De-risked investments</li>
@@ -965,62 +1137,56 @@
                     </div>
                 </div>
 
-                <!-- CENTER COLUMN: Innovation Engine -->
+                <!-- CENTER -->
                 <div class="column center">
-                    <div class="center-box" id="nonprofit-box" data-panel="nonprofit">
+                    <div class="center-card" id="nonprofit-box" data-panel="nonprofit">
                         <h3>501(c)(3) Research Arm</h3>
                         <div class="spec">
-                            <span class="spec-label">Owns:</span>
+                            <span class="spec-label">Owns</span>
                             <span class="spec-value">All research IP (perpetual)</span>
                         </div>
                         <div class="spec">
-                            <span class="spec-label">Does:</span>
+                            <span class="spec-label">Does</span>
                             <span class="spec-value">Problem-focused research</span>
                         </div>
                         <div class="spec">
-                            <span class="spec-label">Governs:</span>
+                            <span class="spec-label">Governs</span>
                             <span class="spec-value">Research priorities (no investor input)</span>
                         </div>
                         <div class="spec">
-                            <span class="spec-label">Board:</span>
+                            <span class="spec-label">Board</span>
                             <span class="spec-value">ED sits on for-profit boards</span>
                         </div>
                     </div>
 
-                    <div class="decision-box center-decision" id="decision-product" data-panel="decision-product">
+                    <div class="decision-card center-decision" id="decision-product" data-panel="decision-product">
                         <h4>Product Advancement</h4>
-                        <p class="label">Criteria</p>
+                        <p class="card-label">Criteria</p>
                         <ul>
                             <li>PMF validated</li>
                             <li>Funding secured</li>
                             <li>Ready to scale</li>
                         </ul>
-                        <p class="label" style="margin-top: 12px;">Controlled By</p>
-                        <p style="font-size: 0.85rem;">For-profit board (includes 501c3 ED)</p>
                     </div>
 
-                    <div class="center-box" id="forprofit-box" data-panel="forprofit">
+                    <div class="center-card" id="forprofit-box" data-panel="forprofit">
                         <h3>For-Profit Entity</h3>
                         <div class="spec">
-                            <span class="spec-label">Owns:</span>
+                            <span class="spec-label">Owns</span>
                             <span class="spec-value">Product/Tech IP</span>
                         </div>
                         <div class="spec">
-                            <span class="spec-label">Does:</span>
+                            <span class="spec-label">Does</span>
                             <span class="spec-value">Builds tech, products, scale</span>
                         </div>
                         <div class="spec">
-                            <span class="spec-label">Structure:</span>
+                            <span class="spec-label">Structure</span>
                             <span class="spec-value">Umbrella entity (can spin out)</span>
-                        </div>
-                        <div class="spec">
-                            <span class="spec-label"></span>
-                            <span class="spec-value">Multiple for-profits possible</span>
                         </div>
                     </div>
 
-                    <div class="equity-box" id="equity-box" data-panel="equity">
-                        <h4>↩ 2% Equity Returns to 501(c)(3)</h4>
+                    <div class="equity-card" id="equity-box" data-panel="equity">
+                        <h4>2% Equity Returns to 501(c)(3)</h4>
                         <ul>
                             <li>For-profit grants 2% equity per new IP</li>
                             <li>Equity = "payment" for IP access</li>
@@ -1030,11 +1196,11 @@
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: Decision Points -->
+                <!-- RIGHT -->
                 <div class="column right">
-                    <div class="decision-box" id="decision-research" data-panel="decision-research">
+                    <div class="decision-card" id="decision-research" data-panel="decision-research">
                         <h4>Research Priorities</h4>
-                        <p class="label">Controlled By</p>
+                        <p class="card-label">Controlled By</p>
                         <ul>
                             <li>Donors + 501(c)(3)</li>
                             <li class="emphasis">NO Investors</li>
@@ -1043,14 +1209,14 @@
 
                     <div class="right-spacer"></div>
 
-                    <div class="decision-box" id="decision-ip" data-panel="decision-ip">
+                    <div class="decision-card" id="decision-ip" data-panel="decision-ip">
                         <h4>IP Ownership</h4>
-                        <div style="font-size: 0.85rem; margin-bottom: 8px;">
-                            <span style="font-weight: 600;">Research IP:</span>
+                        <div style="font-size: 0.8rem; margin-bottom: 8px;">
+                            <strong>Research IP:</strong>
                             <span style="color: var(--text-light);"> 501(c)(3) owns forever</span>
                         </div>
-                        <div style="font-size: 0.85rem;">
-                            <span style="font-weight: 600;">Product IP:</span>
+                        <div style="font-size: 0.8rem;">
+                            <strong>Product IP:</strong>
                             <span style="color: var(--text-light);"> For-Profit owns</span>
                         </div>
                     </div>
@@ -1078,9 +1244,14 @@
             </div>
         </div>
 
-        <!-- Risk Mitigation Section -->
+        <!-- Risk Section -->
         <section class="risk-section" id="risk-section">
-            <h2>Risk Mitigation</h2>
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <span class="section-title">Risk Mitigation</span>
+                <div class="section-line"></div>
+            </div>
+
             <div class="risk-grid">
                 <div class="risk-card">
                     <h4>For Investors</h4>
@@ -1122,9 +1293,7 @@
             <h3 id="panel-title">Details</h3>
             <button class="panel-close" id="panel-close">×</button>
         </div>
-        <div class="panel-content" id="panel-content">
-            <!-- Dynamic content inserted here -->
-        </div>
+        <div class="panel-content" id="panel-content"></div>
     </div>
 
     <!-- Tour Overlay -->
@@ -1136,7 +1305,7 @@
         <h4 id="tour-title">Welcome</h4>
         <p id="tour-description">Description here</p>
         <div class="tour-buttons">
-            <button class="tour-btn secondary" id="tour-skip">Skip Tour</button>
+            <button class="tour-btn secondary" id="tour-skip">Skip</button>
             <button class="tour-btn primary" id="tour-next">Next →</button>
         </div>
     </div>
@@ -1148,243 +1317,114 @@
             const arrowsGroup = document.getElementById('arrows-group');
             const buttons = document.querySelectorAll('.btn[data-path]');
 
-            // Panel data
             const panelData = {
                 donors: {
                     title: 'Donors',
+                    tags: ['Philanthropic', 'Tax-Advantaged', 'Pipeline Access'],
                     sections: [
-                        {
-                            heading: 'Role in the Model',
-                            content: 'Donors provide the foundational capital that funds problem-focused research. Their grants enable the 501(c)(3) to pursue high-risk, high-impact research without investor pressure for quick returns.'
-                        },
-                        {
-                            heading: 'Who They Are',
-                            list: ['High-net-worth families', 'Multi-family offices', 'Private foundations', 'Donor-advised funds (DAFs)']
-                        },
-                        {
-                            heading: 'What They Receive',
-                            list: ['Early access to research findings', 'First look at solution proposals', 'Tax deductions for charitable giving', 'Visibility into investment pipeline']
-                        },
-                        {
-                            heading: 'Key Benefit',
-                            content: 'Donors get philanthropic impact PLUS optionality—they can follow on as investors if research yields viable products.'
-                        }
-                    ],
-                    tags: ['Philanthropic', 'Tax-Advantaged', 'Pipeline Access']
+                        { heading: 'Role in the Model', content: 'Donors provide the foundational capital that funds problem-focused research. Their grants enable the 501(c)(3) to pursue high-risk, high-impact research without investor pressure for quick returns.' },
+                        { heading: 'Who They Are', list: ['High-net-worth families', 'Multi-family offices', 'Private foundations', 'Donor-advised funds (DAFs)'] },
+                        { heading: 'What They Receive', list: ['Early access to research findings', 'First look at solution proposals', 'Tax deductions for charitable giving', 'Visibility into investment pipeline'] },
+                        { heading: 'Key Benefit', content: 'Donors get philanthropic impact PLUS optionality—they can follow on as investors if research yields viable products.' }
+                    ]
                 },
                 investors: {
                     title: 'Investors',
+                    tags: ['Patient Capital', 'De-risked', 'Traditional Returns'],
                     sections: [
-                        {
-                            heading: 'Role in the Model',
-                            content: 'Investors provide growth capital to for-profit entities AFTER research has de-risked product-market fit. They fund scaling, not discovery.'
-                        },
-                        {
-                            heading: 'Who They Are',
-                            list: ['Multi-family offices', 'Patient capital providers', 'Climate-focused organizations', 'Impact investors']
-                        },
-                        {
-                            heading: 'What They Receive',
-                            list: ['Traditional financial returns', 'De-risked investments (PMF validated by grants)', 'Longer timeline tolerance', 'Impact alignment']
-                        },
-                        {
-                            heading: 'Key Benefit',
-                            content: 'Investors enter after expensive PMF discovery is complete—funded by grants, not their equity.'
-                        }
-                    ],
-                    tags: ['Patient Capital', 'De-risked', 'Traditional Returns']
+                        { heading: 'Role in the Model', content: 'Investors provide growth capital to for-profit entities AFTER research has de-risked product-market fit. They fund scaling, not discovery.' },
+                        { heading: 'Who They Are', list: ['Multi-family offices', 'Patient capital providers', 'Climate-focused organizations', 'Impact investors'] },
+                        { heading: 'What They Receive', list: ['Traditional financial returns', 'De-risked investments (PMF validated by grants)', 'Longer timeline tolerance', 'Impact alignment'] },
+                        { heading: 'Key Benefit', content: 'Investors enter after expensive PMF discovery is complete—funded by grants, not their equity.' }
+                    ]
                 },
                 nonprofit: {
                     title: '501(c)(3) Research Arm',
+                    tags: ['IP Owner', 'Research Hub', 'Governance'],
                     sections: [
-                        {
-                            heading: 'Role in the Model',
-                            content: 'The nonprofit is the innovation engine. It owns all research IP in perpetuity, sets research priorities independent of investor pressure, and provides governance continuity across for-profit entities.'
-                        },
-                        {
-                            heading: 'What It Owns',
-                            content: 'All research IP forever—this is non-negotiable. Research IP never transfers to for-profits; they license it.'
-                        },
-                        {
-                            heading: 'What It Does',
-                            list: ['Problem-focused research', 'IP development and protection', 'Research priority governance', 'For-profit board representation']
-                        },
-                        {
-                            heading: 'Key Benefit',
-                            content: 'The 2% equity return creates a sustainable funding loop that compounds over time, reducing dependence on future grants.'
-                        }
-                    ],
-                    tags: ['IP Owner', 'Research Hub', 'Governance']
+                        { heading: 'Role in the Model', content: 'The nonprofit is the innovation engine. It owns all research IP in perpetuity, sets research priorities independent of investor pressure, and provides governance continuity across for-profit entities.' },
+                        { heading: 'What It Owns', content: 'All research IP forever—this is non-negotiable. Research IP never transfers to for-profits; they license it.' },
+                        { heading: 'What It Does', list: ['Problem-focused research', 'IP development and protection', 'Research priority governance', 'For-profit board representation'] },
+                        { heading: 'Key Benefit', content: 'The 2% equity return creates a sustainable funding loop that compounds over time, reducing dependence on future grants.' }
+                    ]
                 },
                 forprofit: {
                     title: 'For-Profit Entity',
+                    tags: ['Product Builder', 'Scalable', 'Investor-Funded'],
                     sections: [
-                        {
-                            heading: 'Role in the Model',
-                            content: 'For-profit entities take validated research and build scalable products. They own product/tech IP but license research IP from the 501(c)(3).'
-                        },
-                        {
-                            heading: 'Structure Options',
-                            list: ['Single umbrella entity', 'Multiple spin-out companies', 'Joint ventures with strategic partners']
-                        },
-                        {
-                            heading: 'What It Owns',
-                            content: 'Product IP, tech implementations, customer relationships, and go-to-market assets. NOT the underlying research IP.'
-                        },
-                        {
-                            heading: 'Key Mechanism',
-                            content: 'Grants 2% equity to 501(c)(3) for each new IP licensed. This "pays" for research access while creating aligned incentives.'
-                        }
-                    ],
-                    tags: ['Product Builder', 'Scalable', 'Investor-Funded']
+                        { heading: 'Role in the Model', content: 'For-profit entities take validated research and build scalable products. They own product/tech IP but license research IP from the 501(c)(3).' },
+                        { heading: 'Structure Options', list: ['Single umbrella entity', 'Multiple spin-out companies', 'Joint ventures with strategic partners'] },
+                        { heading: 'What It Owns', content: 'Product IP, tech implementations, customer relationships, and go-to-market assets. NOT the underlying research IP.' },
+                        { heading: 'Key Mechanism', content: 'Grants 2% equity to 501(c)(3) for each new IP licensed. This "pays" for research access while creating aligned incentives.' }
+                    ]
                 },
                 equity: {
                     title: '2% Equity Return Loop',
+                    tags: ['Sustainable', 'Aligned Incentives', 'Compounding'],
                     sections: [
-                        {
-                            heading: 'How It Works',
-                            content: 'Each time a for-profit licenses new research IP, it grants 2% equity to the 501(c)(3). This is the "price" for IP access and creates perpetual alignment.'
-                        },
-                        {
-                            heading: 'Why It Matters',
-                            list: ['Creates sustainable nonprofit funding', 'Aligns incentives across entities', 'Compounds over time with multiple products', 'Reduces dependence on new grants']
-                        },
-                        {
-                            heading: 'The Math',
-                            content: 'If the studio launches 5 products, the nonprofit holds 10% across the portfolio. If any succeed at scale, the nonprofit becomes self-sustaining.'
-                        },
-                        {
-                            heading: 'Key Insight',
-                            content: 'This is the innovation that makes the model work long-term. Philanthropy funds R&D; equity returns fund the institution.'
-                        }
-                    ],
-                    tags: ['Sustainable', 'Aligned Incentives', 'Compounding']
+                        { heading: 'How It Works', content: 'Each time a for-profit licenses new research IP, it grants 2% equity to the 501(c)(3). This is the "price" for IP access and creates perpetual alignment.' },
+                        { heading: 'Why It Matters', list: ['Creates sustainable nonprofit funding', 'Aligns incentives across entities', 'Compounds over time with multiple products', 'Reduces dependence on new grants'] },
+                        { heading: 'The Math', content: 'If the studio launches 5 products, the nonprofit holds 10% across the portfolio. If any succeed at scale, the nonprofit becomes self-sustaining.' },
+                        { heading: 'Key Insight', content: 'This is the innovation that makes the model work long-term. Philanthropy funds R&D; equity returns fund the institution.' }
+                    ]
                 },
                 'decision-product': {
                     title: 'Product Advancement Decision',
+                    tags: ['Gate', 'PMF Required', 'Board Decision'],
                     sections: [
-                        {
-                            heading: 'What This Decides',
-                            content: 'Whether research is ready to move from nonprofit exploration to for-profit commercialization.'
-                        },
-                        {
-                            heading: 'Criteria for Advancement',
-                            list: ['Product-market fit validated', 'Investment funding secured', 'Scalability confirmed', 'Team identified']
-                        },
-                        {
-                            heading: 'Who Decides',
-                            content: 'The for-profit board, which includes the 501(c)(3) Executive Director. This ensures research priorities inform commercialization decisions.'
-                        }
-                    ],
-                    tags: ['Gate', 'PMF Required', 'Board Decision']
+                        { heading: 'What This Decides', content: 'Whether research is ready to move from nonprofit exploration to for-profit commercialization.' },
+                        { heading: 'Criteria for Advancement', list: ['Product-market fit validated', 'Investment funding secured', 'Scalability confirmed', 'Team identified'] },
+                        { heading: 'Who Decides', content: 'The for-profit board, which includes the 501(c)(3) Executive Director. This ensures research priorities inform commercialization decisions.' }
+                    ]
                 },
                 'decision-research': {
                     title: 'Research Priorities Decision',
+                    tags: ['Independence', 'No Investor Input', 'Mission-Driven'],
                     sections: [
-                        {
-                            heading: 'What This Decides',
-                            content: 'Which problems the 501(c)(3) pursues, what research gets funded, and how resources are allocated.'
-                        },
-                        {
-                            heading: 'Who Controls This',
-                            list: ['Donors (through grant agreements)', '501(c)(3) leadership and board', 'Advisory committees']
-                        },
-                        {
-                            heading: 'Critical Exclusion',
-                            content: 'INVESTORS HAVE NO INPUT. This protects research independence and prevents short-term commercial pressure from distorting problem selection.'
-                        }
-                    ],
-                    tags: ['Independence', 'No Investor Input', 'Mission-Driven']
+                        { heading: 'What This Decides', content: 'Which problems the 501(c)(3) pursues, what research gets funded, and how resources are allocated.' },
+                        { heading: 'Who Controls This', list: ['Donors (through grant agreements)', '501(c)(3) leadership and board', 'Advisory committees'] },
+                        { heading: 'Critical Exclusion', content: 'INVESTORS HAVE NO INPUT. This protects research independence and prevents short-term commercial pressure from distorting problem selection.' }
+                    ]
                 },
                 'decision-ip': {
                     title: 'IP Ownership Structure',
+                    tags: ['Perpetual', 'Licensed', 'Protected'],
                     sections: [
-                        {
-                            heading: 'Research IP',
-                            content: 'Owned by 501(c)(3) FOREVER. Never sold, never transferred. For-profits license it.'
-                        },
-                        {
-                            heading: 'Product IP',
-                            content: 'Owned by for-profit entities. This includes implementations, product features, and tech built on top of research.'
-                        },
-                        {
-                            heading: 'Why This Split',
-                            content: 'Protects institutional knowledge while enabling commercial value capture. The nonprofit maintains leverage; for-profits can still build valuable businesses.'
-                        }
-                    ],
-                    tags: ['Perpetual', 'Licensed', 'Protected']
+                        { heading: 'Research IP', content: 'Owned by 501(c)(3) FOREVER. Never sold, never transferred. For-profits license it.' },
+                        { heading: 'Product IP', content: 'Owned by for-profit entities. This includes implementations, product features, and tech built on top of research.' },
+                        { heading: 'Why This Split', content: 'Protects institutional knowledge while enabling commercial value capture. The nonprofit maintains leverage; for-profits can still build valuable businesses.' }
+                    ]
                 }
             };
 
-            // Tour steps
             const tourSteps = [
-                {
-                    element: 'donors-box',
-                    title: 'Step 1: Donors Fund Research',
-                    description: 'The model starts with donors providing grants to the 501(c)(3). These are tax-deductible contributions that fund problem-focused research—no strings attached.',
-                    arrows: ['arrow1']
-                },
-                {
-                    element: 'nonprofit-box',
-                    title: 'Step 2: Research Happens Here',
-                    description: 'The 501(c)(3) owns all research IP in perpetuity. It conducts research, protects IP, and sets priorities independent of investor pressure.',
-                    arrows: []
-                },
-                {
-                    element: 'decision-product',
-                    title: 'Step 3: Product-Market Fit Gate',
-                    description: 'When research shows commercial promise, it passes through this decision point. PMF must be validated and funding secured before moving to a for-profit.',
-                    arrows: ['arrow3', 'arrow4']
-                },
-                {
-                    element: 'forprofit-box',
-                    title: 'Step 4: For-Profit Builds Products',
-                    description: 'Validated research moves to for-profit entities that build, scale, and commercialize. They own product IP but license research IP from the nonprofit.',
-                    arrows: []
-                },
-                {
-                    element: 'investors-box',
-                    title: 'Step 5: Investors Fund Scaling',
-                    description: 'Investors provide capital AFTER PMF is proven. They get de-risked investments because grants already funded the expensive discovery phase.',
-                    arrows: ['arrow5', 'arrow6']
-                },
-                {
-                    element: 'equity-box',
-                    title: 'Step 6: The 2% Equity Loop',
-                    description: 'This is the key innovation. For-profits grant 2% equity back to the nonprofit for each IP licensed. Over time, this creates sustainable funding independent of grants.',
-                    arrows: ['arrow7']
-                },
-                {
-                    element: 'risk-section',
-                    title: 'Step 7: Everyone Wins',
-                    description: 'Donors get impact + deal flow. Investors get de-risked returns. The studio gets diversified funding and sustainable operations. That\'s the model.',
-                    arrows: []
-                }
+                { element: 'donors-box', title: 'Step 1: Donors Fund Research', description: 'The model starts with donors providing grants to the 501(c)(3). These are tax-deductible contributions that fund problem-focused research—no strings attached.', arrows: ['arrow1'] },
+                { element: 'nonprofit-box', title: 'Step 2: Research Happens Here', description: 'The 501(c)(3) owns all research IP in perpetuity. It conducts research, protects IP, and sets priorities independent of investor pressure.', arrows: [] },
+                { element: 'decision-product', title: 'Step 3: Product-Market Fit Gate', description: 'When research shows commercial promise, it passes through this decision point. PMF must be validated and funding secured before moving to a for-profit.', arrows: ['arrow3', 'arrow4'] },
+                { element: 'forprofit-box', title: 'Step 4: For-Profit Builds Products', description: 'Validated research moves to for-profit entities that build, scale, and commercialize. They own product IP but license research IP from the nonprofit.', arrows: [] },
+                { element: 'investors-box', title: 'Step 5: Investors Fund Scaling', description: 'Investors provide capital AFTER PMF is proven. They get de-risked investments because grants already funded the expensive discovery phase.', arrows: ['arrow5', 'arrow6'] },
+                { element: 'equity-box', title: 'Step 6: The 2% Equity Loop', description: 'This is the key innovation. For-profits grant 2% equity back to the nonprofit for each IP licensed. Over time, this creates sustainable funding independent of grants.', arrows: ['arrow7'] },
+                { element: 'risk-section', title: 'Step 7: Everyone Wins', description: 'Donors get impact + deal flow. Investors get de-risked returns. The studio gets diversified funding and sustainable operations. That\'s the model.', arrows: [] }
             ];
 
             let currentTourStep = 0;
             let tourActive = false;
 
-            // Element references
             const elements = {
                 donors: document.getElementById('donors-box'),
                 nonprofit: document.getElementById('nonprofit-box'),
                 decision: document.getElementById('decision-product'),
                 forprofit: document.getElementById('forprofit-box'),
                 investors: document.getElementById('investors-box'),
-                equity: document.getElementById('equity-box'),
-                researchDecision: document.getElementById('decision-research'),
-                ipDecision: document.getElementById('decision-ip')
+                equity: document.getElementById('equity-box')
             };
 
-            // Panel elements
             const panelOverlay = document.getElementById('panel-overlay');
             const detailPanel = document.getElementById('detail-panel');
             const panelTitle = document.getElementById('panel-title');
             const panelContent = document.getElementById('panel-content');
             const panelClose = document.getElementById('panel-close');
 
-            // Tour elements
             const tourOverlay = document.getElementById('tour-overlay');
             const tourTooltip = document.getElementById('tour-tooltip');
             const tourProgress = document.getElementById('tour-progress');
@@ -1393,7 +1433,6 @@
             const tourNext = document.getElementById('tour-next');
             const tourSkip = document.getElementById('tour-skip');
 
-            // Get element center and edge positions relative to wrapper
             function getPos(el, edge = 'center') {
                 const wrapperRect = wrapper.getBoundingClientRect();
                 const rect = el.getBoundingClientRect();
@@ -1401,7 +1440,6 @@
                 const y = rect.top - wrapperRect.top;
                 const w = rect.width;
                 const h = rect.height;
-
                 switch(edge) {
                     case 'right': return { x: x + w, y: y + h/2 };
                     case 'left': return { x: x, y: y + h/2 };
@@ -1416,33 +1454,22 @@
                 path.setAttribute('id', id);
                 path.setAttribute('d', d);
                 path.setAttribute('class', 'arrow-path ' + className);
-
-                if (className.includes('equity')) {
-                    path.setAttribute('marker-end', 'url(#arrowhead-equity)');
-                } else {
-                    path.setAttribute('marker-end', 'url(#arrowhead)');
-                }
-
+                path.setAttribute('marker-end', className.includes('equity') ? 'url(#arrowhead-equity)' : 'url(#arrowhead)');
                 arrowsGroup.appendChild(path);
-
                 if (labelText && labelPos) {
                     const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                     label.setAttribute('class', 'arrow-label' + (className.includes('equity') ? ' equity' : ''));
                     label.setAttribute('x', labelPos.x);
                     label.setAttribute('y', labelPos.y);
-                    if (labelPos.rotate) {
-                        label.setAttribute('transform', `rotate(${labelPos.rotate} ${labelPos.x} ${labelPos.y})`);
-                    }
+                    if (labelPos.rotate) label.setAttribute('transform', `rotate(${labelPos.rotate} ${labelPos.x} ${labelPos.y})`);
                     label.textContent = labelText;
                     arrowsGroup.appendChild(label);
                 }
-
                 return path;
             }
 
             function drawArrows() {
                 arrowsGroup.innerHTML = '';
-
                 const donors = getPos(elements.donors, 'right');
                 const donorsLeft = getPos(elements.donors, 'left');
                 const nonprofitLeft = getPos(elements.nonprofit, 'left');
@@ -1453,57 +1480,18 @@
                 const forprofitLeft = getPos(elements.forprofit, 'left');
                 const investors = getPos(elements.investors, 'right');
                 const equityLeft = getPos(elements.equity, 'left');
+                const offset = 12;
 
-                const offset = 15;
+                createArrow('arrow1', `M ${donors.x} ${donors.y - offset} L ${nonprofitLeft.x - 8} ${nonprofitLeft.y - offset}`, '', 'Grants', { x: (donors.x + nonprofitLeft.x) / 2, y: donors.y - offset - 6 });
+                createArrow('arrow2', `M ${nonprofitLeft.x} ${nonprofitLeft.y + offset} L ${donors.x + 8} ${donors.y + offset}`, 'dashed', 'Findings', { x: (donors.x + nonprofitLeft.x) / 2, y: donors.y + offset + 14 });
+                createArrow('arrow3', `M ${nonprofitBottom.x} ${nonprofitBottom.y} L ${decisionTop.x} ${decisionTop.y - 8}`, '', 'IP', { x: nonprofitBottom.x + 10, y: (nonprofitBottom.y + decisionTop.y) / 2 });
+                createArrow('arrow4', `M ${decisionBottom.x} ${decisionBottom.y} L ${forprofitTop.x} ${forprofitTop.y - 8}`, '', 'Approved', { x: decisionBottom.x + 10, y: (decisionBottom.y + forprofitTop.y) / 2 });
+                createArrow('arrow5', `M ${investors.x} ${investors.y - offset} L ${forprofitLeft.x - 8} ${forprofitLeft.y - offset}`, '', 'Capital', { x: (investors.x + forprofitLeft.x) / 2, y: investors.y - offset - 6 });
+                createArrow('arrow6', `M ${forprofitLeft.x} ${forprofitLeft.y + offset} L ${investors.x + 8} ${investors.y + offset}`, 'dashed', 'Returns', { x: (investors.x + forprofitLeft.x) / 2, y: investors.y + offset + 14 });
 
-                createArrow('arrow1',
-                    `M ${donors.x} ${donors.y - offset} L ${nonprofitLeft.x - 10} ${nonprofitLeft.y - offset}`,
-                    '', 'Grants',
-                    { x: (donors.x + nonprofitLeft.x) / 2, y: donors.y - offset - 8 }
-                );
-
-                createArrow('arrow2',
-                    `M ${nonprofitLeft.x} ${nonprofitLeft.y + offset} L ${donors.x + 10} ${donors.y + offset}`,
-                    'dashed', 'Findings',
-                    { x: (donors.x + nonprofitLeft.x) / 2, y: donors.y + offset + 16 }
-                );
-
-                createArrow('arrow3',
-                    `M ${nonprofitBottom.x} ${nonprofitBottom.y} L ${decisionTop.x} ${decisionTop.y - 10}`,
-                    '', 'IP',
-                    { x: nonprofitBottom.x + 12, y: (nonprofitBottom.y + decisionTop.y) / 2 }
-                );
-
-                createArrow('arrow4',
-                    `M ${decisionBottom.x} ${decisionBottom.y} L ${forprofitTop.x} ${forprofitTop.y - 10}`,
-                    '', 'Approved',
-                    { x: decisionBottom.x + 12, y: (decisionBottom.y + forprofitTop.y) / 2 }
-                );
-
-                createArrow('arrow5',
-                    `M ${investors.x} ${investors.y - offset} L ${forprofitLeft.x - 10} ${forprofitLeft.y - offset}`,
-                    '', 'Capital',
-                    { x: (investors.x + forprofitLeft.x) / 2, y: investors.y - offset - 8 }
-                );
-
-                createArrow('arrow6',
-                    `M ${forprofitLeft.x} ${forprofitLeft.y + offset} L ${investors.x + 10} ${investors.y + offset}`,
-                    'dashed', 'Returns',
-                    { x: (investors.x + forprofitLeft.x) / 2, y: investors.y + offset + 16 }
-                );
-
-                const loopPadding = 40;
+                const loopPadding = 35;
                 const leftEdge = donorsLeft.x - loopPadding;
-                createArrow('arrow7',
-                    `M ${equityLeft.x} ${equityLeft.y}
-                     L ${leftEdge + 30} ${equityLeft.y}
-                     Q ${leftEdge} ${equityLeft.y}, ${leftEdge} ${equityLeft.y - 30}
-                     L ${leftEdge} ${nonprofitLeft.y + 30}
-                     Q ${leftEdge} ${nonprofitLeft.y}, ${leftEdge + 30} ${nonprofitLeft.y}
-                     L ${nonprofitLeft.x - 10} ${nonprofitLeft.y}`,
-                    'equity', '2% EQUITY',
-                    { x: leftEdge - 8, y: (equityLeft.y + nonprofitLeft.y) / 2, rotate: -90 }
-                );
+                createArrow('arrow7', `M ${equityLeft.x} ${equityLeft.y} L ${leftEdge + 25} ${equityLeft.y} Q ${leftEdge} ${equityLeft.y}, ${leftEdge} ${equityLeft.y - 25} L ${leftEdge} ${nonprofitLeft.y + 25} Q ${leftEdge} ${nonprofitLeft.y}, ${leftEdge + 25} ${nonprofitLeft.y} L ${nonprofitLeft.x - 8} ${nonprofitLeft.y}`, 'equity', '2%', { x: leftEdge - 6, y: (equityLeft.y + nonprofitLeft.y) / 2, rotate: -90 });
 
                 const wrapperRect = wrapper.getBoundingClientRect();
                 svg.setAttribute('viewBox', `0 0 ${wrapperRect.width} ${wrapperRect.height}`);
@@ -1511,249 +1499,94 @@
                 svg.style.height = wrapperRect.height + 'px';
             }
 
-            const paths = {
-                donor: ['arrow1', 'arrow2'],
-                investor: ['arrow5', 'arrow6'],
-                research: ['arrow1', 'arrow3', 'arrow4'],
-                equity: ['arrow4', 'arrow7']
-            };
-
-            const pathBoxes = {
-                donor: ['donors-box', 'nonprofit-box'],
-                investor: ['investors-box', 'forprofit-box'],
-                research: ['donors-box', 'nonprofit-box', 'decision-product', 'forprofit-box'],
-                equity: ['forprofit-box', 'equity-box', 'nonprofit-box']
-            };
+            const paths = { donor: ['arrow1', 'arrow2'], investor: ['arrow5', 'arrow6'], research: ['arrow1', 'arrow3', 'arrow4'], equity: ['arrow4', 'arrow7'] };
+            const pathBoxes = { donor: ['donors-box', 'nonprofit-box'], investor: ['investors-box', 'forprofit-box'], research: ['donors-box', 'nonprofit-box', 'decision-product', 'forprofit-box'], equity: ['forprofit-box', 'equity-box', 'nonprofit-box'] };
 
             function resetAll() {
-                document.querySelectorAll('.arrow-path').forEach(arrow => {
-                    arrow.classList.remove('active', 'animating');
-                });
-                document.querySelectorAll('.arrow-label').forEach(label => {
-                    label.classList.remove('active');
-                });
-                document.querySelectorAll('.highlighted').forEach(el => {
-                    el.classList.remove('highlighted');
-                });
-                document.querySelectorAll('.tour-highlight').forEach(el => {
-                    el.classList.remove('tour-highlight');
-                });
-                buttons.forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.arrow-path').forEach(a => a.classList.remove('active', 'animating'));
+                document.querySelectorAll('.arrow-label').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.highlighted').forEach(e => e.classList.remove('highlighted'));
+                document.querySelectorAll('.tour-highlight').forEach(e => e.classList.remove('tour-highlight'));
+                buttons.forEach(b => b.classList.remove('active'));
             }
 
             function activatePath(pathName) {
                 resetAll();
                 if (paths[pathName]) {
-                    paths[pathName].forEach(arrowId => {
-                        const arrow = document.getElementById(arrowId);
-                        if (arrow) {
-                            arrow.classList.add('active');
-                            const label = arrow.nextElementSibling;
-                            if (label && label.tagName === 'text') {
-                                label.classList.add('active');
-                            }
-                        }
+                    paths[pathName].forEach(id => {
+                        const arrow = document.getElementById(id);
+                        if (arrow) { arrow.classList.add('active'); const label = arrow.nextElementSibling; if (label && label.tagName === 'text') label.classList.add('active'); }
                     });
                 }
-                if (pathBoxes[pathName]) {
-                    pathBoxes[pathName].forEach(boxId => {
-                        const box = document.getElementById(boxId);
-                        if (box) box.classList.add('highlighted');
-                    });
-                }
+                if (pathBoxes[pathName]) { pathBoxes[pathName].forEach(id => { const box = document.getElementById(id); if (box) box.classList.add('highlighted'); }); }
             }
 
-            // Panel functions
             function openPanel(panelId) {
                 const data = panelData[panelId];
                 if (!data) return;
-
                 panelTitle.textContent = data.title;
-
                 let html = '';
-                if (data.tags) {
-                    html += '<div style="margin-bottom: 20px;">';
-                    data.tags.forEach(tag => {
-                        html += `<span class="panel-tag">${tag}</span>`;
-                    });
-                    html += '</div>';
-                }
-
-                data.sections.forEach(section => {
-                    html += '<div class="panel-section">';
-                    html += `<h4>${section.heading}</h4>`;
-                    if (section.content) {
-                        html += `<p>${section.content}</p>`;
-                    }
-                    if (section.list) {
-                        html += '<ul>';
-                        section.list.forEach(item => {
-                            html += `<li>${item}</li>`;
-                        });
-                        html += '</ul>';
-                    }
-                    html += '</div>';
-                });
-
+                if (data.tags) { html += '<div class="panel-tags">'; data.tags.forEach(t => { html += `<span class="panel-tag">${t}</span>`; }); html += '</div>'; }
+                data.sections.forEach(s => { html += '<div class="panel-section">'; html += `<h4>${s.heading}</h4>`; if (s.content) html += `<p>${s.content}</p>`; if (s.list) { html += '<ul>'; s.list.forEach(i => { html += `<li>${i}</li>`; }); html += '</ul>'; } html += '</div>'; });
                 panelContent.innerHTML = html;
                 panelOverlay.classList.add('active');
                 detailPanel.classList.add('active');
                 document.body.classList.add('panel-open');
             }
 
-            function closePanel() {
-                panelOverlay.classList.remove('active');
-                detailPanel.classList.remove('active');
-                document.body.classList.remove('panel-open');
-            }
+            function closePanel() { panelOverlay.classList.remove('active'); detailPanel.classList.remove('active'); document.body.classList.remove('panel-open'); }
 
-            // Tour functions
-            function startTour() {
-                tourActive = true;
-                currentTourStep = 0;
-                showTourStep(currentTourStep);
-            }
-
-            function endTour() {
-                tourActive = false;
-                tourOverlay.classList.remove('active');
-                tourTooltip.classList.remove('active');
-                resetAll();
-            }
+            function startTour() { tourActive = true; currentTourStep = 0; showTourStep(currentTourStep); }
+            function endTour() { tourActive = false; tourOverlay.classList.remove('active'); tourTooltip.classList.remove('active'); resetAll(); }
 
             function showTourStep(stepIndex) {
                 const step = tourSteps[stepIndex];
-                if (!step) {
-                    endTour();
-                    return;
-                }
-
+                if (!step) { endTour(); return; }
                 resetAll();
-
-                // Update progress
                 tourProgress.textContent = `Step ${stepIndex + 1} of ${tourSteps.length}`;
                 tourTitle.textContent = step.title;
                 tourDescription.textContent = step.description;
                 tourNext.textContent = stepIndex === tourSteps.length - 1 ? 'Finish' : 'Next →';
-
-                // Highlight element
                 const element = document.getElementById(step.element);
                 if (element) {
                     element.classList.add('tour-highlight');
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    // Position tooltip
                     setTimeout(() => {
                         const rect = element.getBoundingClientRect();
                         const tooltipRect = tourTooltip.getBoundingClientRect();
-
                         let left = rect.right + 20;
                         let top = rect.top;
-
-                        if (left + tooltipRect.width > window.innerWidth - 20) {
-                            left = rect.left - tooltipRect.width - 20;
-                        }
-                        if (left < 20) {
-                            left = rect.left;
-                            top = rect.bottom + 20;
-                        }
-                        if (top + tooltipRect.height > window.innerHeight - 20) {
-                            top = window.innerHeight - tooltipRect.height - 20;
-                        }
+                        if (left + tooltipRect.width > window.innerWidth - 20) left = rect.left - tooltipRect.width - 20;
+                        if (left < 20) { left = rect.left; top = rect.bottom + 20; }
+                        if (top + tooltipRect.height > window.innerHeight - 20) top = window.innerHeight - tooltipRect.height - 20;
                         if (top < 20) top = 20;
-
                         tourTooltip.style.left = left + 'px';
                         tourTooltip.style.top = top + 'px';
                     }, 400);
                 }
-
-                // Highlight arrows
-                step.arrows.forEach(arrowId => {
-                    const arrow = document.getElementById(arrowId);
-                    if (arrow) {
-                        arrow.classList.add('active');
-                        const label = arrow.nextElementSibling;
-                        if (label && label.tagName === 'text') {
-                            label.classList.add('active');
-                        }
-                    }
-                });
-
+                step.arrows.forEach(id => { const arrow = document.getElementById(id); if (arrow) { arrow.classList.add('active'); const label = arrow.nextElementSibling; if (label && label.tagName === 'text') label.classList.add('active'); } });
                 tourOverlay.classList.add('active');
                 tourTooltip.classList.add('active');
             }
 
-            // Event listeners
             buttons.forEach(button => {
                 button.addEventListener('click', function() {
                     const path = this.dataset.path;
-
-                    if (path === 'reset') {
-                        resetAll();
-                        return;
-                    }
-
-                    if (path === 'tour') {
-                        startTour();
-                        return;
-                    }
-
-                    if (this.classList.contains('active')) {
-                        resetAll();
-                    } else {
-                        activatePath(path);
-                        this.classList.add('active');
-                    }
+                    if (path === 'reset') { resetAll(); return; }
+                    if (path === 'tour') { startTour(); return; }
+                    if (this.classList.contains('active')) resetAll(); else { activatePath(path); this.classList.add('active'); }
                 });
             });
 
-            // Panel click handlers
-            document.querySelectorAll('[data-panel]').forEach(el => {
-                el.addEventListener('click', function() {
-                    if (!tourActive) {
-                        openPanel(this.dataset.panel);
-                    }
-                });
-            });
-
+            document.querySelectorAll('[data-panel]').forEach(el => { el.addEventListener('click', function() { if (!tourActive) openPanel(this.dataset.panel); }); });
             panelClose.addEventListener('click', closePanel);
             panelOverlay.addEventListener('click', closePanel);
-
-            // Tour handlers
-            tourNext.addEventListener('click', function() {
-                currentTourStep++;
-                if (currentTourStep >= tourSteps.length) {
-                    endTour();
-                } else {
-                    showTourStep(currentTourStep);
-                }
-            });
-
+            tourNext.addEventListener('click', function() { currentTourStep++; if (currentTourStep >= tourSteps.length) endTour(); else showTourStep(currentTourStep); });
             tourSkip.addEventListener('click', endTour);
+            document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { if (tourActive) endTour(); else closePanel(); } if (tourActive && e.key === 'ArrowRight') { currentTourStep++; if (currentTourStep >= tourSteps.length) endTour(); else showTourStep(currentTourStep); } if (tourActive && e.key === 'ArrowLeft' && currentTourStep > 0) { currentTourStep--; showTourStep(currentTourStep); } });
 
-            // Keyboard navigation
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (tourActive) endTour();
-                    else closePanel();
-                }
-                if (tourActive && e.key === 'ArrowRight') {
-                    currentTourStep++;
-                    if (currentTourStep >= tourSteps.length) endTour();
-                    else showTourStep(currentTourStep);
-                }
-                if (tourActive && e.key === 'ArrowLeft' && currentTourStep > 0) {
-                    currentTourStep--;
-                    showTourStep(currentTourStep);
-                }
-            });
-
-            // Draw arrows on load and resize
             drawArrows();
-            window.addEventListener('resize', () => {
-                drawArrows();
-                if (!tourActive) resetAll();
-            });
+            window.addEventListener('resize', () => { drawArrows(); if (!tourActive) resetAll(); });
         });
     </script>
 </body>
