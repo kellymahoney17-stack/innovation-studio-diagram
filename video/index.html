@@ -18,6 +18,8 @@
     --sans:"Inter Tight",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
     --serif:"Newsreader",Iowan Old Style,Palatino,Georgia,serif;
     --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+    /* motion, kept in sync with TIMING at the top of the script */
+    --travel:820ms; --morph:680ms; --fade:450ms; --ease:cubic-bezier(.4,0,.2,1);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -72,15 +74,15 @@
   /* ---------- picture ---------- */
   .frame{padding:28px 24px 8px;overflow-x:auto}
   svg#stage{display:block;width:100%;min-width:520px;height:auto}
-  .layer{transition:opacity .45s ease}
-  .mk{transition:cx .82s cubic-bezier(.4,0,.2,1),cy .82s cubic-bezier(.4,0,.2,1),
-      r .68s ease,fill .68s ease,fill-opacity .68s ease}
+  .layer{transition:opacity var(--fade) ease}
+  .mk{transition:cx var(--travel) var(--ease),cy var(--travel) var(--ease),
+      r var(--morph) ease,fill var(--morph) ease,fill-opacity var(--morph) ease}
 
   /* ---------- voice over ---------- */
   .vo{display:flex;align-items:center;justify-content:center;
       font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.55;
       color:var(--ink);text-align:center;max-width:60ch;margin:0 auto;
-      padding:14px 8px 34px;min-height:5.4em;transition:opacity .3s ease}
+      padding:14px 8px 34px;min-height:5.4em;transition:opacity var(--fade) ease}
   .vo.out{opacity:0}
 
   /* ---------- production note ---------- */
@@ -94,6 +96,62 @@
   .prod .toggle:hover{border-color:var(--green);color:var(--green)}
   .prod .toggle:focus-visible{outline:2px solid var(--green);outline-offset:2px}
   body.notes-off .prod p{visibility:hidden}
+
+  /* ---------- timing ---------- */
+  .tuner{margin:34px 4px 0;border-top:1px solid var(--border)}
+  .tuner summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:11px;
+     padding:14px 0;font-family:var(--mono);font-size:10px;letter-spacing:.13em;
+     text-transform:uppercase;color:var(--text-faint)}
+  .tuner summary::-webkit-details-marker{display:none}
+  .tuner summary::before{content:"";width:6px;height:6px;flex:0 0 auto;
+     border-right:1.2px solid currentColor;border-bottom:1.2px solid currentColor;
+     transform:rotate(-45deg);transition:transform .2s}
+  .tuner[open] summary::before{transform:rotate(45deg)}
+  .tuner summary:hover{color:var(--green)}
+  .tuner summary:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+  .tuner .runtime{margin-left:auto;letter-spacing:.05em;font-variant-numeric:tabular-nums}
+
+  .tbody{display:grid;grid-template-columns:minmax(260px,.85fr) minmax(320px,1fr);
+     gap:40px;padding:4px 0 30px;align-items:start}
+  .grp h3{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--text-faint);font-weight:400;margin:0 0 13px}
+  .grp h3.mt{margin-top:24px}
+  .row{display:grid;grid-template-columns:96px 1fr 64px;align-items:center;gap:12px;margin-bottom:11px}
+  .row label{font-size:12.5px;color:var(--text)}
+  .row input[type=range]{width:100%;accent-color:var(--green);height:18px;cursor:pointer}
+  .tuner input[type=number],.tuner select{font-family:var(--mono);font-size:11.5px;
+     font-variant-numeric:tabular-nums;text-align:right;color:var(--ink);background:var(--surface);
+     border:1px solid var(--border-strong);border-radius:5px;padding:4px 6px;width:100%}
+  .tuner select{text-align:left;grid-column:2 / span 2;cursor:pointer}
+  .tuner input:focus-visible,.tuner select:focus-visible,.tuner button:focus-visible{
+     outline:2px solid var(--green);outline-offset:2px}
+
+  table.dwell{width:100%;border-collapse:collapse}
+  table.dwell th{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+     color:var(--text-faint);font-weight:400;text-align:left;padding:0 0 8px}
+  table.dwell th.r,table.dwell td.r{text-align:right}
+  table.dwell td{border-top:1px solid var(--border);padding:5px 0}
+  table.dwell .jump{background:transparent;border:0;padding:2px 0;cursor:pointer;
+     font-family:var(--sans);font-size:12.5px;color:var(--text);text-align:left}
+  table.dwell .jump:hover{color:var(--green)}
+  table.dwell .jump .num{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+     color:var(--text-faint);margin-right:8px}
+  table.dwell input{width:64px}
+  table.dwell tr.over input{border-color:var(--green);color:var(--green)}
+  table.dwell .src{background:transparent;border:0;padding:2px 0;font-family:var(--mono);
+     font-size:9px;letter-spacing:.1em;color:var(--text-faint)}
+  table.dwell tr.over .src{color:var(--green);cursor:pointer;text-decoration:underline;
+     text-underline-offset:3px}
+
+  .acts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:0 0 14px}
+  .acts button{background:transparent;border:1px solid var(--border-strong);border-radius:999px;
+     color:var(--text);font-family:var(--sans);font-size:11.5px;padding:5px 13px;cursor:pointer;
+     transition:border-color .18s,color .18s}
+  .acts button:hover{border-color:var(--green);color:var(--green)}
+  .acts .note{font-size:11.5px;color:var(--text-faint)}
+  .cfg{margin:0;padding:15px 17px;background:var(--surface);border:1px solid var(--border);
+     border-radius:10px;font-family:var(--mono);font-size:11px;line-height:1.75;color:var(--text);
+     white-space:pre;overflow-x:auto;font-variant-numeric:tabular-nums}
 
   /* ---------- notes ---------- */
   .notes{margin-top:72px;max-width:74ch}
@@ -111,6 +169,7 @@
   @media (prefers-reduced-motion:reduce){
     .mk,.layer,.vo{transition:none}
   }
+  @media (max-width:860px){.tbody{grid-template-columns:1fr;gap:26px}}
   @media (max-width:720px){
     .wrap{padding:40px 18px 96px}
     h1{font-size:27px}
@@ -120,6 +179,7 @@
     .vo{font-size:17px;min-height:0 !important;padding-bottom:28px}
     .prod{flex-direction:column;gap:8px}
     .prod h2{flex:0 0 auto}
+    .row{grid-template-columns:88px 1fr 58px;gap:9px}
   }
 </style>
 </head>
@@ -158,6 +218,58 @@
     <button type="button" class="toggle" id="notesToggle" aria-pressed="true">Hide</button>
   </div>
 
+  <details class="tuner" id="tuner">
+    <summary>Timing<span class="runtime" id="runtime">1:47</span></summary>
+
+    <div class="tbody">
+      <div class="grp">
+        <h3>Motion</h3>
+        <div class="row"><label for="rTravel">Travel</label>
+          <input id="rTravel" type="range" min="0" max="2400" step="20">
+          <input id="nTravel" type="number" min="0" max="8000" step="10" aria-label="Travel, milliseconds"></div>
+        <div class="row"><label for="rMorph">Size and color</label>
+          <input id="rMorph" type="range" min="0" max="2400" step="20">
+          <input id="nMorph" type="number" min="0" max="8000" step="10" aria-label="Size and color, milliseconds"></div>
+        <div class="row"><label for="rFade">Crossfade</label>
+          <input id="rFade" type="range" min="0" max="1600" step="10">
+          <input id="nFade" type="number" min="0" max="4000" step="10" aria-label="Crossfade, milliseconds"></div>
+        <div class="row"><label for="selEase">Curve</label>
+          <select id="selEase">
+            <option value="cubic-bezier(.4,0,.2,1)">Standard</option>
+            <option value="cubic-bezier(.65,0,.35,1)">Firm</option>
+            <option value="cubic-bezier(.25,1,.5,1)">Settle</option>
+            <option value="cubic-bezier(.5,0,.5,1)">Even</option>
+            <option value="cubic-bezier(.34,1.3,.64,1)">Overshoot</option>
+            <option value="linear">Linear</option>
+          </select></div>
+
+        <h3 class="mt">For the source</h3>
+        <div class="acts">
+          <button type="button" id="btnCopy">Copy block</button>
+          <button type="button" id="btnReset">Reset to source</button>
+          <span class="note" id="storeNote"></span>
+        </div>
+        <pre class="cfg" id="cfg"></pre>
+      </div>
+
+      <div class="grp">
+        <h3>Pacing</h3>
+        <div class="row"><label for="rWps">Words a second</label>
+          <input id="rWps" type="range" min="1.5" max="6" step="0.05">
+          <input id="nWps" type="number" min="0.5" max="12" step="0.05" aria-label="Words a second"></div>
+        <div class="row"><label for="rLead">Lead in</label>
+          <input id="rLead" type="range" min="0" max="3000" step="50">
+          <input id="nLead" type="number" min="0" max="9000" step="10" aria-label="Lead in, milliseconds"></div>
+
+        <h3 class="mt">Hold, per panel</h3>
+        <table class="dwell"><thead><tr>
+          <th scope="col">Panel</th><th scope="col" class="r">Seconds</th><th scope="col" class="r">From</th>
+        </tr></thead><tbody id="dwellRows"></tbody></table>
+      </div>
+    </div>
+
+  </details>
+
   <div class="notes">
     <h2>How to read it</h2>
     <p class="lead">The piece runs on a few fixed rules. Each is a constraint on the animation, not a description of the product.</p>
@@ -168,7 +280,7 @@
 
     <div class="note"><b>Two colors, and only two</b><span><span class="mark" style="background:#14402e"></span> Marcus and <span class="mark" style="background:#8a7b4e"></span> his wife. This is the only second color in the piece, because panel 03 turns on being able to tell the two apart, and panel 04 turns on their staying apart. The marks keep those origins through to the end.</span></div>
 
-    <div class="note"><b>Pacing</b><span>Panels hold for a read-aloud pace of roughly 3.4 words a second, so the run through approximates the length of the finished film. The clock is computed from the narration, not hand set, and moves when the script does.</span></div>
+    <div class="note"><b>Pacing</b><span>A panel holds for as long as its narration takes to read aloud, so the clock is computed from the script rather than hand set, and moves when the script does. Pace, lead in, travel and the easing curve are all editable under Timing above, and any panel can be given a fixed hold that overrides the derived one.</span></div>
 
     <div class="note"><b>Status of the copy</b><span>The narration is a voice over draft and stands in for the real thing. Donor wording is Johny's call.</span></div>
   </div>
@@ -177,6 +289,27 @@
 
 <script>
 (function(){
+
+  /* =====================================================================
+     TIMING. Everything is milliseconds except wordsPerSecond.
+
+     A panel's hold is derived from its narration, so it follows the script:
+         hold = leadIn + (words / wordsPerSecond) * 1000
+     Put a number in `dwell` to override that for one panel, in ms.
+
+     Edit these values here, or tune them by ear in the Timing panel under
+     the film and paste the block it prints back over this one.
+     ===================================================================== */
+  var TIMING={
+    wordsPerSecond: 3.4,                    // read-aloud pace
+    leadIn:         850,                    // silence before each panel's line
+    travel:         820,                    // marks moving to new positions
+    morph:          680,                    // marks changing size and color
+    fade:           450,                    // apparatus layers and caption crossfade
+    ease:           'cubic-bezier(.4,0,.2,1)',
+    dwell:          {}                      // per panel overrides, e.g. { 5: 12000 }
+  };
+
   var NS='http://www.w3.org/2000/svg', svg=document.getElementById('stage');
   var C={ink:'#1b2620',text:'#5f6a60',faint:'#98a09a',guide:'#93a897',
          green:'#14402e',tint:'#e8f0ec',bronze:'#8a7b4e',neutral:'#5f6a60',
@@ -360,12 +493,35 @@
         w:'The abstraction resolves into the console, and everything funnels into the middle, where the person actually starts. The side panes are empty and waiting, because at the start they are.'}
   };
 
-  /* ---- timing, derived from the narration so it moves when the script does ---- */
-  var N=10;
-  var DW=[], CUM=[0], TOTAL=0;
-  for(var s=1;s<=N;s++){
-    var ms=Math.round(850+(COPY[s].n.split(/\s+/).length/3.4)*1000);
-    DW.push(ms); TOTAL+=ms; CUM.push(TOTAL);
+  /* ---- timing engine ---- */
+  var N=10, DW=[], CUM=[0], TOTAL=0;
+  var STORE='gi-narrative-timing', BASE=JSON.stringify(TIMING);
+
+  function clone(o){ return JSON.parse(JSON.stringify(o)); }
+  var T=clone(TIMING);
+  /* Anything tuned in the browser is kept per browser, but the source wins:
+     if TIMING above is edited, the stored copy is discarded on next load. */
+  try{
+    var saved=JSON.parse(localStorage.getItem(STORE)||'null');
+    if(saved && saved.base===BASE && saved.value) T=saved.value;
+  }catch(e){}
+  function stored(){ try{ return !!localStorage.getItem(STORE); }catch(e){ return false; } }
+  function save(){ try{ localStorage.setItem(STORE,JSON.stringify({base:BASE,value:T})); }catch(e){} }
+  function forget(){ try{ localStorage.removeItem(STORE); }catch(e){} }
+
+  function derived(s){ return Math.round(T.leadIn+(COPY[s].n.split(/\s+/).length/T.wordsPerSecond)*1000); }
+  function isOver(s){ return T.dwell[s]!==undefined && T.dwell[s]!==null; }
+  function dwellOf(s){ return isOver(s) ? Math.max(0,T.dwell[s]) : derived(s); }
+  function recompute(){
+    DW=[]; CUM=[0]; TOTAL=0;
+    for(var s=1;s<=N;s++){ var ms=dwellOf(s); DW.push(ms); TOTAL+=ms; CUM.push(TOTAL); }
+  }
+  function applyMotion(){
+    var r=document.documentElement.style;
+    r.setProperty('--travel',T.travel+'ms');
+    r.setProperty('--morph', T.morph+'ms');
+    r.setProperty('--fade',  T.fade+'ms');
+    r.setProperty('--ease',  T.ease);
   }
   function mmss(ms){var t=Math.max(0,Math.round(ms/1000));return Math.floor(t/60)+':'+('0'+(t%60)).slice(-2);}
 
@@ -377,7 +533,8 @@
       playIcon=document.getElementById('playIcon'), scrub=document.getElementById('scrub'),
       indexEl=document.getElementById('index');
 
-  document.getElementById('tAll').textContent=mmss(TOTAL);
+  var tAll=document.getElementById('tAll'), runtime=document.getElementById('runtime'),
+      cfgEl=document.getElementById('cfg'), storeNote=document.getElementById('storeNote');
 
   var ICON={
     play:'<svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor" aria-hidden="true"><path d="M0 0l9 5.5L0 11z"/></svg>',
@@ -426,7 +583,7 @@
     for(var id in L) L[id].setAttribute('opacity', LAYERS[s].indexOf(id)>-1 ? 1 : 0);
 
     vo.classList.add('out');
-    setTimeout(function(){ vo.textContent=COPY[s].n; vo.classList.remove('out'); },160);
+    setTimeout(function(){ vo.textContent=COPY[s].n; vo.classList.remove('out'); },Math.round(T.fade*0.36));
     what.textContent=COPY[s].w;
     live.textContent='Panel '+('0'+s).slice(-2)+', '+TITLES[s-1]+'. '+COPY[s].n;
     pNow.textContent=('0'+s).slice(-2);
@@ -493,6 +650,118 @@
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitVO); else fitVO();
   var rt=null;
   window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(fitVO,150); });
+
+  /* ---- timing panel ---- */
+  var CTL=[
+    {k:'travel',        r:'rTravel',n:'nTravel',dec:0},
+    {k:'morph',         r:'rMorph', n:'nMorph', dec:0},
+    {k:'fade',          r:'rFade',  n:'nFade',  dec:0},
+    {k:'wordsPerSecond',r:'rWps',   n:'nWps',   dec:2},
+    {k:'leadIn',        r:'rLead',  n:'nLead',  dec:0}
+  ];
+  var ease=document.getElementById('selEase'), rows=[];
+
+  function cfgText(){
+    var ks=Object.keys(T.dwell).map(Number).sort(function(a,b){return a-b;}),
+        d=ks.map(function(k){ return k+': '+Math.round(T.dwell[k]); });
+    return 'var TIMING={\n'+
+      '  wordsPerSecond: '+(Math.round(T.wordsPerSecond*100)/100)+',\n'+
+      '  leadIn:         '+Math.round(T.leadIn)+',\n'+
+      '  travel:         '+Math.round(T.travel)+',\n'+
+      '  morph:          '+Math.round(T.morph)+',\n'+
+      '  fade:           '+Math.round(T.fade)+',\n'+
+      "  ease:           '"+T.ease+"',\n"+
+      '  dwell:          {'+(d.length?' '+d.join(', ')+' ':'')+'}\n'+
+      '};';
+  }
+
+  function buildRows(){
+    var tb=document.getElementById('dwellRows');
+    for(var i=1;i<=N;i++){
+      (function(pn){
+        var tr=document.createElement('tr');
+        tr.innerHTML='<td><button type="button" class="jump">'+
+            '<span class="num">'+('0'+pn).slice(-2)+'</span></button></td>'+
+            '<td class="r"><input type="number" min="0.2" max="600" step="0.1"></td>'+
+            '<td class="r"><button type="button" class="src"></button></td>';
+        var jump=tr.querySelector('.jump'), inp=tr.querySelector('input'), src=tr.querySelector('.src');
+        jump.appendChild(document.createTextNode(TITLES[pn-1]));
+        jump.addEventListener('click',function(){ go(pn); });
+        inp.setAttribute('aria-label','Panel '+pn+' hold, seconds');
+        inp.addEventListener('input',function(){
+          var v=parseFloat(inp.value);
+          if(isFinite(v) && v>0){ T.dwell[pn]=Math.round(v*1000); changed(); }
+        });
+        src.addEventListener('click',function(){
+          if(!isOver(pn)) return;
+          delete T.dwell[pn]; changed(); inp.value=(dwellOf(pn)/1000).toFixed(1);
+        });
+        tb.appendChild(tr);
+        rows.push({tr:tr,inp:inp,src:src,pn:pn});
+      })(i);
+    }
+  }
+
+  function setControls(){
+    CTL.forEach(function(c){
+      var v=T[c.k];
+      document.getElementById(c.r).value=v;
+      document.getElementById(c.n).value=c.dec?(+v).toFixed(c.dec):Math.round(v);
+    });
+    ease.value=T.ease;
+    if(!ease.selectedOptions.length){                 // a curve typed into the source
+      var o=document.createElement('option');
+      o.value=T.ease; o.textContent='From source'; ease.appendChild(o); ease.value=T.ease;
+    }
+    rows.forEach(function(r){ r.inp.value=(dwellOf(r.pn)/1000).toFixed(1); });
+  }
+
+  function syncUI(){
+    tAll.textContent=mmss(TOTAL);
+    runtime.textContent=mmss(TOTAL);
+    cfgEl.textContent=cfgText();
+    storeNote.textContent=stored()?'Tuned in this browser.':'';
+    rows.forEach(function(r){
+      var over=isOver(r.pn);
+      r.tr.classList.toggle('over',over);
+      r.src.textContent=over?'SET':'DERIVED';
+      r.src.title=over?'Revert to the derived hold':'Derived from the narration';
+      if(document.activeElement!==r.inp) r.inp.value=(dwellOf(r.pn)/1000).toFixed(1);
+    });
+  }
+
+  function changed(){ applyMotion(); recompute(); syncUI(); save(); paint(); }
+
+  CTL.forEach(function(c){
+    var rg=document.getElementById(c.r), nm=document.getElementById(c.n);
+    function take(v,peer){
+      v=parseFloat(v);
+      if(!isFinite(v)||v<0) return;
+      T[c.k]=v; peer.value=c.dec?v.toFixed(c.dec):Math.round(v); changed();
+    }
+    rg.addEventListener('input',function(){ take(rg.value,nm); });
+    nm.addEventListener('input',function(){ take(nm.value,rg); });
+  });
+  ease.addEventListener('change',function(){ T.ease=ease.value; changed(); });
+
+  document.getElementById('btnCopy').addEventListener('click',function(){
+    var b=this, txt=cfgText(), done=function(){ b.textContent='Copied'; setTimeout(function(){ b.textContent='Copy block'; },1400); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(done,function(){ selectCfg(); });
+    } else selectCfg();
+    function selectCfg(){
+      var r=document.createRange(); r.selectNodeContents(cfgEl);
+      var sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      b.textContent='Selected, press copy'; setTimeout(function(){ b.textContent='Copy block'; },2200);
+    }
+  });
+
+  document.getElementById('btnReset').addEventListener('click',function(){
+    forget(); T=clone(TIMING);
+    applyMotion(); recompute(); setControls(); syncUI(); paint();
+  });
+
+  buildRows(); setControls(); applyMotion(); recompute(); syncUI();
 
   var nt=document.getElementById('notesToggle');
   nt.addEventListener('click',function(){
