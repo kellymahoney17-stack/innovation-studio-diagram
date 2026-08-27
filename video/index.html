@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One object, ten panels</title>
+<meta name="description" content="Giving Intelligence introduction narrative. A ten-panel concept film in which nothing new is ever drawn.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f7f8f6; --surface:#ffffff;
+    --border:#ececea; --border-strong:#e0e2dd;
+    --ink:#1b2620; --text:#5f6a60; --text-faint:#98a09a;
+    --green:#14402e; --green-press:#0f3324; --green-tint:#e8f0ec;
+    --bronze:#8a7b4e;
+    --sans:"Inter Tight",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --serif:"Newsreader",Iowan Old Style,Palatino,Georgia,serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1020px;margin:0 auto;padding:64px 32px 128px}
+
+  .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+           color:var(--text-faint);margin:0 0 20px}
+  h1{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.2;letter-spacing:-.02em;
+     margin:0 0 16px;color:var(--ink)}
+  .standfirst{max-width:68ch;color:var(--text);font-size:15.5px;margin:0 0 40px}
+
+  /* ---------- the stage ---------- */
+  .film{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+
+  .transport{display:flex;align-items:center;gap:20px;padding:18px 24px}
+  .play{display:inline-flex;align-items:center;gap:9px;flex:0 0 auto;
+        background:var(--green);color:#fff;border:0;border-radius:999px;
+        font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.01em;
+        padding:9px 18px 9px 15px;cursor:pointer;transition:background .18s}
+  .play:hover{background:var(--green-press)}
+  .play:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+  .play svg{display:block}
+
+  .scrub{flex:1 1 auto;padding:9px 0;cursor:pointer;border:0;background:transparent;display:block;width:100%}
+  .scrub:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:4px}
+  .track{height:6px;border-radius:3px;background:var(--border);overflow:hidden}
+  .fill{height:100%;width:0;background:var(--green);border-radius:3px}
+
+  .clock{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;color:var(--text-faint);
+         font-variant-numeric:tabular-nums;letter-spacing:.04em}
+  .clock b{color:var(--ink);font-weight:400}
+
+  /* ---------- panel index ---------- */
+  .index{display:flex;overflow-x:auto;border-top:1px solid var(--border);
+         border-bottom:1px solid var(--border);scrollbar-width:thin}
+  .index button{flex:1 0 96px;text-align:left;background:transparent;border:0;
+                border-right:1px solid var(--border);border-top:2px solid transparent;
+                padding:11px 12px 13px;cursor:pointer;font-family:var(--sans);
+                transition:background .18s}
+  .index button:last-child{border-right:0}
+  .index button:hover{background:var(--bg)}
+  .index button:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+  .index .n{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+            color:var(--text-faint);margin-bottom:3px}
+  .index .t{display:block;font-size:12.5px;line-height:1.3;color:var(--text);min-height:2.6em}
+  .index [aria-pressed="true"]{border-top-color:var(--green);background:var(--green-tint)}
+  .index [aria-pressed="true"] .n{color:var(--green)}
+  .index [aria-pressed="true"] .t{color:var(--green);font-weight:600}
+
+  /* ---------- picture ---------- */
+  .frame{padding:28px 24px 8px;overflow-x:auto}
+  svg#stage{display:block;width:100%;min-width:520px;height:auto}
+  .layer{transition:opacity .45s ease}
+  .mk{transition:cx .82s cubic-bezier(.4,0,.2,1),cy .82s cubic-bezier(.4,0,.2,1),
+      r .68s ease,fill .68s ease,fill-opacity .68s ease}
+
+  /* ---------- voice over ---------- */
+  .vo{display:flex;align-items:center;justify-content:center;
+      font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.55;
+      color:var(--ink);text-align:center;max-width:60ch;margin:0 auto;
+      padding:14px 8px 34px;min-height:5.4em;transition:opacity .3s ease}
+  .vo.out{opacity:0}
+
+  /* ---------- production note ---------- */
+  .prod{display:flex;gap:28px;align-items:flex-start;margin:22px 4px 0}
+  .prod h2{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+           color:var(--text-faint);font-weight:400;margin:2px 0 0;flex:0 0 150px}
+  .prod p{margin:0;color:var(--text);font-size:14px;max-width:62ch;flex:1 1 auto}
+  .prod .toggle{flex:0 0 auto;background:transparent;border:1px solid var(--border-strong);
+                border-radius:999px;color:var(--text);font-family:var(--sans);font-size:11.5px;
+                padding:4px 12px;cursor:pointer;transition:border-color .18s,color .18s}
+  .prod .toggle:hover{border-color:var(--green);color:var(--green)}
+  .prod .toggle:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  body.notes-off .prod p{visibility:hidden}
+
+  /* ---------- notes ---------- */
+  .notes{margin-top:72px;max-width:74ch}
+  .notes h2{font-family:var(--serif);font-weight:400;font-size:21px;letter-spacing:-.01em;margin:0 0 4px}
+  .notes .lead{color:var(--text);margin:0 0 22px}
+  .note{border-top:1px solid var(--border);padding:15px 0}
+  .note:last-child{border-bottom:1px solid var(--border)}
+  .note b{display:block;font-size:14px;font-weight:600;color:var(--ink)}
+  .note span{display:block;color:var(--text);margin-top:2px}
+  .note .mark{display:inline-block;width:9px;height:9px;border-radius:50%;
+              vertical-align:baseline;margin:0 1px}
+
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  @media (prefers-reduced-motion:reduce){
+    .mk,.layer,.vo{transition:none}
+  }
+  @media (max-width:720px){
+    .wrap{padding:40px 18px 96px}
+    h1{font-size:27px}
+    .transport{flex-wrap:wrap;gap:14px}
+    .scrub{order:3;flex:1 0 100%}
+    .clock{margin-left:auto}
+    .vo{font-size:17px;min-height:0 !important;padding-bottom:28px}
+    .prod{flex-direction:column;gap:8px}
+    .prod h2{flex:0 0 auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Giving Intelligence · Introduction narrative · Concept</p>
+  <h1>One object, ten panels</h1>
+  <p class="standfirst">Nothing new is ever drawn. The same marks become Marcus's eleven years of giving, separate into two, go quiet, spread from here to there, resolve into a picture of him, extend into a practice, adjust as he works it, and land inside the console. Every mark on screen at the end was on screen at the start. The argument is in the movement rather than in any one frame, so it is worth running the whole thing through before reading a single panel.</p>
+
+  <div class="film">
+
+    <div class="transport">
+      <button type="button" class="play" id="play" aria-label="Run through">
+        <span id="playIcon"></span><span id="playLabel">Run through</span>
+      </button>
+      <button type="button" class="scrub" id="scrub" aria-label="Seek through the ten panels">
+        <span class="track"><span class="fill" id="fill"></span></span>
+      </button>
+      <span class="clock"><b id="tNow">0:00</b> / <span id="tAll">1:47</span> &nbsp;·&nbsp; <b id="pNow">01</b>/10</span>
+    </div>
+
+    <div class="index" id="index" role="group" aria-label="Panels"></div>
+
+    <div class="frame">
+      <svg id="stage" viewBox="0 0 820 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
+    </div>
+
+    <p class="vo" id="vo"></p>
+    <p class="sr" id="live" aria-live="polite"></p>
+  </div>
+
+  <div class="prod">
+    <h2>What the marks<br>are doing</h2>
+    <p id="what"></p>
+    <button type="button" class="toggle" id="notesToggle" aria-pressed="true">Hide</button>
+  </div>
+
+  <div class="notes">
+    <h2>How to read it</h2>
+    <p class="lead">The piece runs on a few fixed rules. Each is a constraint on the animation, not a description of the product.</p>
+
+    <div class="note"><b>The continuity rule</b><span>Thirty six marks are created once, on load, and only ever repositioned. No panel introduces a new element. If a panel needs something that is not already on screen, the panel is wrong.</span></div>
+
+    <div class="note"><b>The apparatus</b><span>The dashed rules, anchors and spans are the product doing its work. They appear only in the panels where something is being organized, which is why panel 05 has none. Nothing is being organized there.</span></div>
+
+    <div class="note"><b>Two colors, and only two</b><span><span class="mark" style="background:#14402e"></span> Marcus and <span class="mark" style="background:#8a7b4e"></span> his wife. This is the only second color in the piece, because panel 03 turns on being able to tell the two apart, and panel 04 turns on their staying apart. The marks keep those origins through to the end.</span></div>
+
+    <div class="note"><b>Pacing</b><span>Panels hold for a read-aloud pace of roughly 3.4 words a second, so the run through approximates the length of the finished film. The clock is computed from the narration, not hand set, and moves when the script does.</span></div>
+
+    <div class="note"><b>Status of the copy</b><span>The narration is a voice over draft and stands in for the real thing. Donor wording is Johny's call.</span></div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg', svg=document.getElementById('stage');
+  var C={ink:'#1b2620',text:'#5f6a60',faint:'#98a09a',guide:'#93a897',
+         green:'#14402e',tint:'#e8f0ec',bronze:'#8a7b4e',neutral:'#5f6a60',
+         hair:'#ececea',ghost:'#c4c9c3',dim:'#b9beb8'};
+  var MONO='ui-monospace,Menlo,monospace', SERIF='Newsreader,Iowan Old Style,Palatino,Georgia,serif';
+
+  function el(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  function txt(p,a,s){var t=el('text',a);t.textContent=s;p.appendChild(t);return t;}
+  function rnd(i,m,amp){return ((Math.sin(i*12.9898+m*78.233)*43758.5453)%1+1)%1*amp-amp/2;}
+
+  /* ---- the one mark set: eleven years of giving ---- */
+  var raw=[[1,'m',3],[1,'w',2],[1,'m',2],[2,'w',4],[2,'m',2],[2,'m',5],[3,'w',3],[3,'m',3],
+    [3,'w',2],[4,'m',6],[4,'w',2],[4,'m',3],[5,'w',5],[5,'m',2],[5,'m',4],[5,'w',3],
+    [6,'m',3],[6,'w',6],[6,'m',2],[7,'w',3],[7,'m',7],[7,'m',3],[8,'w',4],[8,'m',2],
+    [8,'w',5],[9,'m',4],[9,'w',3],[9,'m',6],[10,'w',4],[10,'m',3],[10,'m',5],[10,'w',2],
+    [11,'m',4],[11,'w',6],[11,'m',3],[11,'w',3]];
+
+  var L={};
+  function layer(id){var g=el('g',{'class':'layer',opacity:0});L[id]=g;svg.appendChild(g);return g;}
+
+  /* 01 -- where / why */
+  var g1=layer('one');
+  txt(g1,{x:170,y:212,'text-anchor':'middle','font-family':SERIF,'font-size':54,fill:C.ink},'where');
+  txt(g1,{x:640,y:212,'text-anchor':'middle','font-family':SERIF,'font-size':54,fill:C.ink},'why');
+
+  /* 02 -- Marcus, named quietly */
+  var g2=layer('marcus');
+  g2.appendChild(el('line',{x1:80,y1:74,x2:118,y2:74,stroke:C.text,'stroke-width':1.4}));
+  txt(g2,{x:126,y:78,'font-family':MONO,'font-size':10.5,'letter-spacing':1.4,fill:C.text},
+      'MARCUS · ELEVEN YEARS OF GIVING');
+
+  /* 03 -- two bodies */
+  var g3=layer('bands');
+  g3.appendChild(el('line',{x1:80,y1:120,x2:740,y2:120,stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+  g3.appendChild(el('line',{x1:80,y1:300,x2:740,y2:300,stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+  g3.appendChild(el('line',{x1:80,y1:108,x2:104,y2:108,stroke:C.green,'stroke-width':1.4}));
+  txt(g3,{x:112,y:112,'font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.green},'MARCUS');
+  g3.appendChild(el('line',{x1:80,y1:318,x2:104,y2:318,stroke:C.bronze,'stroke-width':1.4}));
+  txt(g3,{x:112,y:322,'font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.bronze},'HIS WIFE');
+
+  /* 04 -- one thing between them, not a merge */
+  var g4=layer('align');
+  g4.appendChild(el('rect',{x:292,y:186,width:236,height:30,rx:3,fill:C.tint,stroke:C.green,'stroke-width':1.2}));
+  txt(g4,{x:306,y:206,'font-family':MONO,'font-size':9.5,'letter-spacing':.7,fill:C.green},
+      'WHERE YOU AND YOUR PARTNER STAND');
+  txt(g4,{x:410,y:238,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.faint},
+      'ONE THING, BETWEEN THEM');
+
+  /* 06 -- two anchors, a span, and the questions that open along it */
+  var g6=layer('structure');
+  g6.appendChild(el('line',{x1:200,y1:200,x2:620,y2:200,stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+  g6.appendChild(el('circle',{cx:200,cy:200,r:9,fill:'none',stroke:C.green,'stroke-width':2}));
+  g6.appendChild(el('circle',{cx:620,cy:200,r:9,fill:'none',stroke:C.green,'stroke-width':2,'stroke-dasharray':'3 3'}));
+  txt(g6,{x:200,y:242,'text-anchor':'middle','font-family':MONO,'font-size':10.5,'letter-spacing':1.4,fill:C.text},
+      'WHERE YOU ARE');
+  txt(g6,{x:620,y:242,'text-anchor':'middle','font-family':MONO,'font-size':10.5,'letter-spacing':1.4,fill:C.text},
+      'WHERE YOU WANT TO GO');
+  [268,336,404,472,540].forEach(function(x){
+    g6.appendChild(el('line',{x1:x,y1:182,x2:x,y2:218,stroke:C.guide,'stroke-width':1,'stroke-dasharray':'2 4'}));
+  });
+
+  /* 07 -- a picture of you, with things to work on */
+  var g7=layer('picture');
+  g7.appendChild(el('circle',{cx:300,cy:200,r:118,fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+  txt(g7,{x:300,y:66,'text-anchor':'middle','font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.faint},
+      'A PICTURE OF YOU');
+  [[379.7,257.5],[262.8,218.5],[300.0,116.6]].forEach(function(c){
+    g7.appendChild(el('circle',{cx:c[0],cy:c[1],r:13,fill:'none',stroke:C.green,'stroke-width':1.4}));
+  });
+  txt(g7,{x:300,y:344,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.green},
+      'THINGS TO WORK ON');
+
+  /* 08 and 09 -- the picture extends into a practice, then the practice reorders */
+  function practice(id,done){
+    var g=layer(id);
+    g.appendChild(el('circle',{cx:240,cy:200,r:88,fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+    var labels=done
+      ? [['01','What you believe about impact',1],['02','Where you and your partner stand',0],['03','What you give through',0]]
+      : [['01','What you believe about impact',0],['02','What you give through',0],['03','Where you and your partner stand',0]];
+    var ys=[112,182,252];
+    g.appendChild(el('path',{d:'M330 172 L520 127 M520 127 L520 197 M520 197 L520 267 M520 267 L620 316',
+      fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+    labels.forEach(function(d,i){
+      var y=ys[i], filled=d[2];
+      g.appendChild(el('rect',{x:522,y:y,width:236,height:30,rx:3,
+        fill:filled?C.green:C.tint,stroke:C.green,'stroke-width':1}));
+      txt(g,{x:536,y:y+20,'font-family':MONO,'font-size':9.5,'letter-spacing':.7,
+        fill:filled?'#ffffff':C.green}, d[0]+' · '+d[1].toUpperCase());
+    });
+    g.appendChild(el('circle',{cx:626,cy:322,r:9,fill:'none',stroke:C.green,'stroke-width':2,'stroke-dasharray':'3 3'}));
+    txt(g,{x:642,y:326,'font-family':MONO,'font-size':9.5,'letter-spacing':1.2,fill:C.text},'WHERE YOU WANT TO GO');
+    if(done){
+      g.appendChild(el('path',{d:'M522 127 C430 96, 330 96, 292 148',fill:'none',stroke:C.green,'stroke-width':1.2}));
+      g.appendChild(el('path',{d:'M299 141 l-8 8 10 4',fill:'none',stroke:C.green,'stroke-width':1.2}));
+      txt(g,{x:404,y:88,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.green},
+          'WHAT YOU DID GOES BACK IN');
+      txt(g,{x:758,y:196,'text-anchor':'end','font-family':MONO,'font-size':8.5,'letter-spacing':1.2,fill:C.bronze},
+          'REORDERED');
+    }
+  }
+  practice('practice',false);
+  practice('practiceDone',true);
+
+  /* 10 -- the console */
+  var g10=layer('console');
+  g10.appendChild(el('rect',{x:40,y:40,width:210,height:320,rx:8,fill:'none',stroke:C.hair,'stroke-width':1}));
+  g10.appendChild(el('rect',{x:572,y:40,width:208,height:320,rx:8,fill:'none',stroke:C.hair,'stroke-width':1}));
+  g10.appendChild(el('rect',{x:266,y:40,width:290,height:320,rx:8,fill:'#ffffff',stroke:C.green,'stroke-width':1.6}));
+  [['YOUR PRACTICE',52,C.dim],['THE CONVERSATION',278,C.green],['WHAT YOU MAKE',584,C.dim]].forEach(function(d){
+    txt(g10,{x:d[1],y:32,'font-family':MONO,'font-size':9.5,'letter-spacing':1.4,fill:d[2]},d[0]);
+  });
+  [145,676].forEach(function(x){
+    txt(g10,{x:x,y:204,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.ghost},
+        'NOTHING YET');
+  });
+  g10.appendChild(el('path',{d:'M300 96 L396 296',fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+  g10.appendChild(el('path',{d:'M522 96 L426 296',fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
+  g10.appendChild(el('rect',{x:288,y:300,width:246,height:38,rx:19,fill:C.tint,stroke:C.green,'stroke-width':1.5}));
+  txt(g10,{x:310,y:324,'font-family':MONO,'font-size':10,'letter-spacing':1.2,fill:C.green},
+      'SAY IT HOWEVER IT COMES OUT');
+
+  /* ---- marks, created once and never again ---- */
+  var gm=el('g',{}); svg.appendChild(gm);
+  var nodes=raw.map(function(d,i){
+    var c=el('circle',{'class':'mk',r:3,fill:C.neutral,'fill-opacity':.5,cx:0,cy:0});
+    gm.appendChild(c);
+    return {el:c,year:d[0],owner:d[1],amt:d[2],i:i};
+  });
+
+  function pos(s,n){
+    var i=n.i, r=3+n.amt*1.15, x0=110, span=(730-110)/10;
+    if(s===1) return {cx:170+rnd(i,1,280), cy:200+rnd(i,2,250), r:r*.75, fill:C.neutral, op:.30};
+    if(s===2) return {cx:x0+(n.year-1)*span+rnd(i,1,30), cy:200+rnd(i,2,190), r:r, fill:C.neutral, op:.5};
+    if(s===3) return {cx:x0+(n.year-1)*span+rnd(i,1,30), cy:(n.owner==='m'?150:270)+rnd(i,3,54), r:r,
+                      fill:n.owner==='m'?C.green:C.bronze, op:.68};
+    if(s===4) return {cx:x0+(n.year-1)*span+rnd(i,1,30), cy:(n.owner==='m'?134:286)+rnd(i,3,46), r:r,
+                      fill:n.owner==='m'?C.green:C.bronze, op:.58};
+    if(s===5) return {cx:410+rnd(i,4,190), cy:200+rnd(i,5,110), r:r*.68, fill:C.neutral, op:.24};
+    if(s===6){var t6=i/(nodes.length-1);
+      return {cx:200+t6*420+rnd(i,6,22), cy:200+rnd(i,7,74), r:r*.72, fill:C.neutral, op:.34};}
+    if(s===7){var a=(i/nodes.length)*Math.PI*2, rad=34+((i*37)%78);
+      return {cx:300+Math.cos(a)*rad, cy:200+Math.sin(a)*rad*.86, r:r*.9,
+              fill:n.owner==='m'?C.green:C.bronze, op:.72};}
+    if(s===8){var a8=(i/nodes.length)*Math.PI*2, r8=26+((i*37)%58);
+      return {cx:240+Math.cos(a8)*r8, cy:200+Math.sin(a8)*r8*.88, r:r*.78,
+              fill:n.owner==='m'?C.green:C.bronze, op:.66};}
+    if(s===9){var a9=(i/nodes.length)*Math.PI*2+0.7, r9=24+((i*53)%62);
+      return {cx:240+Math.cos(a9)*r9, cy:200+Math.sin(a9)*r9*.88, r:r*.78,
+              fill:n.owner==='m'?C.green:C.bronze, op:.66};}
+    var t=i/(nodes.length-1);
+    return {cx:411+rnd(i,6,112*(1-t)+8), cy:96+t*206, r:r*(.72-t*.34),
+            fill:n.owner==='m'?C.green:C.bronze, op:.30+t*.42};
+  }
+
+  var LAYERS={1:['one'],2:['marcus'],3:['bands'],4:['bands','align'],5:[],
+              6:['structure'],7:['picture'],8:['practice'],9:['practiceDone'],10:['console']};
+
+  var TITLES=['Where / why','Marcus','Two bodies','One thing between','Pull back',
+              'Here to there','Picture of you','The practice','It sharpens','The console'];
+
+  var COPY={
+    1:{n:"Many people can tell you where they gave money to. Far fewer can easily say why. Today, almost nothing in the process ever asks. We start somewhere else.",
+       w:'Marks exist already, faint, clustered around where. Nothing sits around why. The gap is literal. No apparatus yet, because nothing is helping yet.'},
+    2:{n:"Let's look at Marcus. Marcus had been giving for eleven years. Meaningful money, every year, to organizations he believed in. What he could not do was say why he gave to those organizations and not others, or whether he was missing something. He wanted better recommendations, so that his next gift would feel more intentional. Marcus used Giving Intelligence to review where he was in his giving and see how he could improve.",
+       w:'The same marks arrange loosely along time. Substantial, no through-line. Nothing added, nothing drawn fresh.'},
+    3:{n:"It turns out, it was not a selection problem. What came out of his Discovery was that he and his wife had been giving separately the entire time. Two sets of instincts about what mattered, eleven years of it, described between them as the family's giving yet never once compared.",
+       w:'No new image. The identical field reorganises into two bodies, labelled as the two people. The apparatus appears here for the first time, because this is the first thing the product does.'},
+    4:{n:"Once they could see it, they could work on it. The third thing in Marcus's plan is a conversation with his wife. Most people have something like this. Very few know it.",
+       w:'The two stay separate. One thing enters between them. Not a join, because they did not merge.'},
+    5:{n:"Giving Intelligence is a new way to approach your philanthropic giving. It gives you clarity about what you are trying to do, and a practice built to do it.",
+       w:'The hard transition. His marks lose their specificity and go quiet. Marcus stops being the subject. Apparatus off, because nothing is being organised in this beat.'},
+    6:{n:"Giving Intelligence starts by finding out where you are and where you want to go. We ask you things most people are never asked about their giving. What you are for. What you got out of. What you want to be true by the end of it.",
+       w:'Two anchors and a span. The marks spread between them. Each question opens a dimension along the way.'},
+    7:{n:"What comes back is a picture of you. A picture you can act on.",
+       w:'The same marks resolve into a coherent shape, still carrying their two origins. Three points inside it are marked as things to work on. No practice items yet.'},
+    8:{n:"Then we build a Giving Practice, unique to where you are starting from and to your giving goals. A Giving Practice is more than a plan. It is the work itself: the conversations, the decisions, the people you bring in.",
+       w:'The three marked points become the practice. The picture holds, smaller, and a route extends from it toward where you want to go, with the modules in sequence.'},
+    9:{n:"As you work, your thinking gets sharper. Your practice follows.",
+       w:'One module completes. What it produced goes back into the picture, the picture moves, and the rest of the route reorders behind it.'},
+    10:{n:"When you're ready, we can create your own Giving Practice today.",
+        w:'The abstraction resolves into the console, and everything funnels into the middle, where the person actually starts. The side panes are empty and waiting, because at the start they are.'}
+  };
+
+  /* ---- timing, derived from the narration so it moves when the script does ---- */
+  var N=10;
+  var DW=[], CUM=[0], TOTAL=0;
+  for(var s=1;s<=N;s++){
+    var ms=Math.round(850+(COPY[s].n.split(/\s+/).length/3.4)*1000);
+    DW.push(ms); TOTAL+=ms; CUM.push(TOTAL);
+  }
+  function mmss(ms){var t=Math.max(0,Math.round(ms/1000));return Math.floor(t/60)+':'+('0'+(t%60)).slice(-2);}
+
+  /* ---- chrome ---- */
+  var vo=document.getElementById('vo'), what=document.getElementById('what'),
+      live=document.getElementById('live'), fill=document.getElementById('fill'),
+      tNow=document.getElementById('tNow'), pNow=document.getElementById('pNow'),
+      playBtn=document.getElementById('play'), playLabel=document.getElementById('playLabel'),
+      playIcon=document.getElementById('playIcon'), scrub=document.getElementById('scrub'),
+      indexEl=document.getElementById('index');
+
+  document.getElementById('tAll').textContent=mmss(TOTAL);
+
+  var ICON={
+    play:'<svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor" aria-hidden="true"><path d="M0 0l9 5.5L0 11z"/></svg>',
+    pause:'<svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor" aria-hidden="true"><rect width="3" height="11"/><rect x="6" width="3" height="11"/></svg>',
+    replay:'<svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.8 5.5a4.3 4.3 0 1 1-1.4-3.2"/><path d="M10.2.9v3h-3"/></svg>'
+  };
+
+  var btns=[];
+  for(var k=1;k<=N;k++){
+    (function(p){
+      var b=document.createElement('button');
+      b.type='button'; b.setAttribute('aria-pressed', p===1?'true':'false');
+      b.innerHTML='<span class="n">'+('0'+p).slice(-2)+'</span><span class="t"></span>';
+      b.querySelector('.t').textContent=TITLES[p-1];
+      b.addEventListener('click',function(){ go(p); });
+      indexEl.appendChild(b); btns.push(b);
+    })(k);
+  }
+
+  /* ---- playback ---- */
+  var cur=1, playing=false, ended=false, t0=0, rafId=null;
+
+  function paint(){
+    var e = CUM[cur-1] + (playing ? Math.min(performance.now()-t0, DW[cur-1]) : 0);
+    if(ended) e=TOTAL;
+    fill.style.width=(e/TOTAL*100).toFixed(2)+'%';
+    tNow.textContent=mmss(e);
+  }
+
+  function setButton(){
+    playIcon.innerHTML = playing ? ICON.pause : (ended ? ICON.replay : ICON.play);
+    playLabel.textContent = playing ? 'Pause' : (ended ? 'Replay' : 'Run through');
+    playBtn.setAttribute('aria-label', playLabel.textContent+', '+mmss(TOTAL)+' in total');
+  }
+
+  function go(s){
+    cur=s; ended=false; t0=performance.now();
+    nodes.forEach(function(n){
+      var p=pos(s,n);
+      n.el.setAttribute('cx',p.cx.toFixed(1));
+      n.el.setAttribute('cy',p.cy.toFixed(1));
+      n.el.setAttribute('r',p.r.toFixed(1));
+      n.el.setAttribute('fill',p.fill);
+      n.el.setAttribute('fill-opacity',p.op);
+    });
+    for(var id in L) L[id].setAttribute('opacity', LAYERS[s].indexOf(id)>-1 ? 1 : 0);
+
+    vo.classList.add('out');
+    setTimeout(function(){ vo.textContent=COPY[s].n; vo.classList.remove('out'); },160);
+    what.textContent=COPY[s].w;
+    live.textContent='Panel '+('0'+s).slice(-2)+', '+TITLES[s-1]+'. '+COPY[s].n;
+    pNow.textContent=('0'+s).slice(-2);
+    btns.forEach(function(b,i){ b.setAttribute('aria-pressed', i+1===s?'true':'false'); });
+    setButton(); paint();
+  }
+
+  function tick(){
+    if(performance.now()-t0 >= DW[cur-1]){
+      if(cur===N){ finish(); return; }
+      go(cur+1);
+    }
+    paint();
+    rafId=requestAnimationFrame(tick);
+  }
+
+  function start(){
+    if(ended) go(1);
+    playing=true; setButton();
+    t0=performance.now();
+    rafId=requestAnimationFrame(tick);
+  }
+  function pause(){
+    if(!playing) return;
+    var held=Math.min(performance.now()-t0, DW[cur-1]);
+    playing=false; cancelAnimationFrame(rafId); rafId=null;
+    t0=performance.now()-held;
+    setButton(); paint();
+  }
+  function finish(){
+    playing=false; ended=true; cancelAnimationFrame(rafId); rafId=null;
+    setButton(); paint();
+  }
+
+  playBtn.addEventListener('click',function(){ playing ? pause() : start(); });
+
+  scrub.addEventListener('click',function(e){
+    var r=scrub.getBoundingClientRect(), at=(e.clientX-r.left)/r.width*TOTAL, s=N;
+    for(var j=1;j<=N;j++){ if(at < CUM[j]){ s=j; break; } }
+    var wasPlaying=playing;
+    go(s);
+    if(wasPlaying){ playing=true; t0=performance.now(); setButton(); }
+  });
+
+  document.addEventListener('keydown',function(e){
+    var tag=(e.target.tagName||'').toLowerCase();
+    if(e.key==='ArrowRight' && cur<N){ e.preventDefault(); go(cur+1); }
+    else if(e.key==='ArrowLeft' && cur>1){ e.preventDefault(); go(cur-1); }
+    else if((e.key===' '||e.key==='k') && tag!=='button'){ e.preventDefault(); playing?pause():start(); }
+  });
+
+  /* reserve the tallest caption so the picture never shifts between panels */
+  function fitVO(){
+    if(window.innerWidth<=720){ vo.style.minHeight=''; return; }
+    var keep=vo.textContent, max=0;
+    vo.style.minHeight='0px';
+    for(var s=1;s<=N;s++){
+      vo.textContent=COPY[s].n;
+      max=Math.max(max, vo.getBoundingClientRect().height);
+    }
+    vo.textContent=keep;
+    vo.style.minHeight=Math.ceil(max)+'px';
+  }
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitVO); else fitVO();
+  var rt=null;
+  window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(fitVO,150); });
+
+  var nt=document.getElementById('notesToggle');
+  nt.addEventListener('click',function(){
+    var on=nt.getAttribute('aria-pressed')==='true';
+    nt.setAttribute('aria-pressed', on?'false':'true');
+    nt.textContent = on ? 'Show' : 'Hide';
+    document.body.classList.toggle('notes-off', on);
+  });
+
+  go(1);
+})();
+</script>
+</body>
+</html>
