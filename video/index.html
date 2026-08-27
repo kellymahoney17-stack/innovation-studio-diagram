@@ -352,9 +352,7 @@
 
   /* 04 -- one thing between them, not a merge */
   var g4=layer('align');
-  g4.appendChild(el('rect',{x:292,y:186,width:236,height:30,rx:3,fill:C.tint,stroke:C.green,'stroke-width':1.2}));
-  txt(g4,{x:306,y:206,'font-family':MONO,'font-size':9.5,'letter-spacing':.7,fill:C.green},
-      'WHERE YOU AND YOUR PARTNER STAND');
+  g4.appendChild(el('rect',{x:350,y:186,width:120,height:30,rx:3,fill:C.tint,stroke:C.green,'stroke-width':1.2}));
   txt(g4,{x:410,y:238,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.faint},
       'ONE THING, BETWEEN THEM');
 
@@ -376,11 +374,6 @@
   g7.appendChild(el('circle',{cx:300,cy:200,r:118,fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
   txt(g7,{x:300,y:66,'text-anchor':'middle','font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.faint},
       'A PICTURE OF YOU');
-  [[379.7,257.5],[262.8,218.5],[300.0,116.6]].forEach(function(c){
-    g7.appendChild(el('circle',{cx:c[0],cy:c[1],r:13,fill:'none',stroke:C.green,'stroke-width':1.4}));
-  });
-  txt(g7,{x:300,y:344,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.green},
-      'THINGS TO WORK ON');
 
   /* 08 and 09 -- the picture extends into a practice, then the practice reorders */
   function practice(id,done){
@@ -394,19 +387,16 @@
       fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
     labels.forEach(function(d,i){
       var y=ys[i], filled=d[2];
-      g.appendChild(el('rect',{x:522,y:y,width:236,height:30,rx:3,
+      g.appendChild(el('rect',{x:522,y:y,width:264,height:30,rx:3,
         fill:filled?C.green:C.tint,stroke:C.green,'stroke-width':1}));
-      txt(g,{x:536,y:y+20,'font-family':MONO,'font-size':9.5,'letter-spacing':.7,
+      txt(g,{x:536,y:y+20,'font-family':MONO,'font-size':9.5,'letter-spacing':.6,
         fill:filled?'#ffffff':C.green}, d[0]+' · '+d[1].toUpperCase());
     });
     g.appendChild(el('circle',{cx:626,cy:322,r:9,fill:'none',stroke:C.green,'stroke-width':2,'stroke-dasharray':'3 3'}));
-    txt(g,{x:642,y:326,'font-family':MONO,'font-size':9.5,'letter-spacing':1.2,fill:C.text},'WHERE YOU WANT TO GO');
     if(done){
       g.appendChild(el('path',{d:'M522 127 C430 96, 330 96, 292 148',fill:'none',stroke:C.green,'stroke-width':1.2}));
       g.appendChild(el('path',{d:'M299 141 l-8 8 10 4',fill:'none',stroke:C.green,'stroke-width':1.2}));
-      txt(g,{x:404,y:88,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.green},
-          'WHAT YOU DID GOES BACK IN');
-      txt(g,{x:758,y:196,'text-anchor':'end','font-family':MONO,'font-size':8.5,'letter-spacing':1.2,fill:C.bronze},
+      txt(g,{x:786,y:302,'text-anchor':'end','font-family':MONO,'font-size':8.5,'letter-spacing':1.2,fill:C.bronze},
           'REORDERED');
     }
   }
@@ -428,8 +418,8 @@
   g10.appendChild(el('path',{d:'M300 96 L396 296',fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
   g10.appendChild(el('path',{d:'M522 96 L426 296',fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
   g10.appendChild(el('rect',{x:288,y:300,width:246,height:38,rx:19,fill:C.tint,stroke:C.green,'stroke-width':1.5}));
-  txt(g10,{x:310,y:324,'font-family':MONO,'font-size':10,'letter-spacing':1.2,fill:C.green},
-      'SAY IT HOWEVER IT COMES OUT');
+  txt(g10,{x:411,y:324,'text-anchor':'middle','font-family':MONO,'font-size':10,'letter-spacing':1.2,fill:C.green},
+      'START YOUR GIVING PRACTICE');
 
   /* ---- marks, created once and never again ---- */
   var gm=el('g',{}); svg.appendChild(gm);
@@ -450,8 +440,8 @@
     if(s===5) return {cx:410+rnd(i,4,190), cy:200+rnd(i,5,110), r:r*.68, fill:C.neutral, op:.24};
     if(s===6){var t6=i/(nodes.length-1);
       return {cx:200+t6*420+rnd(i,6,22), cy:200+rnd(i,7,74), r:r*.72, fill:C.neutral, op:.34};}
-    if(s===7){var a=(i/nodes.length)*Math.PI*2, rad=34+((i*37)%78);
-      return {cx:300+Math.cos(a)*rad, cy:200+Math.sin(a)*rad*.86, r:r*.9,
+    if(s===7){var a7=(i/nodes.length)*Math.PI*2+rnd(i,8,2.6), d7=30+Math.abs(rnd(i,9,168));
+      return {cx:300+Math.cos(a7)*d7, cy:200+Math.sin(a7)*d7*.92, r:r*.9,
               fill:n.owner==='m'?C.green:C.bronze, op:.72};}
     if(s===8){var a8=(i/nodes.length)*Math.PI*2, r8=26+((i*37)%58);
       return {cx:240+Math.cos(a8)*r8, cy:200+Math.sin(a8)*r8*.88, r:r*.78,
@@ -484,9 +474,9 @@
     6:{n:"Giving Intelligence starts by finding out where you are and where you want to go. We ask you things most people are never asked about their giving. What you are for. What you got out of. What you want to be true by the end of it.",
        w:'Two anchors and a span. The marks spread between them. Each question opens a dimension along the way.'},
     7:{n:"What comes back is a picture of you. A picture you can act on.",
-       w:'The same marks resolve into a coherent shape, still carrying their two origins. Three points inside it are marked as things to work on. No practice items yet.'},
+       w:'The same marks gather into one shape, still carrying their two origins, but not yet sorted. Nothing inside it is picked out, because the sorting is what the practice does.'},
     8:{n:"Then we build a Giving Practice, unique to where you are starting from and to your giving goals. A Giving Practice is more than a plan. It is the work itself: the conversations, the decisions, the people you bring in.",
-       w:'The three marked points become the practice. The picture holds, smaller, and a route extends from it toward where you want to go, with the modules in sequence.'},
+       w:'The picture tightens, and the practice comes out of it. Three modules in sequence, and a route running from the picture toward where you want to go.'},
     9:{n:"As you work, your thinking gets sharper. Your practice follows.",
        w:'One module completes. What it produced goes back into the picture, the picture moves, and the rest of the route reorders behind it.'},
     10:{n:"When you're ready, we can create your own Giving Practice today.",
