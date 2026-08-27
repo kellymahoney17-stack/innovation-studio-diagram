@@ -14,7 +14,7 @@
     --border:#ececea; --border-strong:#e0e2dd;
     --ink:#1b2620; --text:#5f6a60; --text-faint:#98a09a;
     --green:#14402e; --green-press:#0f3324; --green-tint:#e8f0ec;
-    --bronze:#8a7b4e;
+    --mark2:#767b78;
     --sans:"Inter Tight",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
     --serif:"Newsreader",Iowan Old Style,Palatino,Georgia,serif;
     --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -278,7 +278,7 @@
 
     <div class="note"><b>The apparatus</b><span>The dashed rules, anchors and spans are the product doing its work. They appear only in the panels where something is being organized, which is why panel 05 has none. Nothing is being organized there.</span></div>
 
-    <div class="note"><b>Two colors, and only two</b><span><span class="mark" style="background:#14402e"></span> Marcus and <span class="mark" style="background:#8a7b4e"></span> his wife. This is the only second color in the piece, because panel 03 turns on being able to tell the two apart, and panel 04 turns on their staying apart. The marks keep those origins through to the end.</span></div>
+    <div class="note"><b>Two colors, and only two</b><span><span class="mark" style="background:#14402e"></span> Marcus and <span class="mark" style="background:#767b78"></span> his wife. This is the only second color in the piece, because panel 03 turns on being able to tell the two apart, and panel 04 turns on their staying apart. The marks keep those origins through to the end.</span></div>
 
     <div class="note"><b>Pacing</b><span>A panel holds for as long as its narration takes to read aloud, so the clock is computed from the script rather than hand set, and moves when the script does. Pace, lead in, travel and the easing curve are all editable under Timing above, and any panel can be given a fixed hold that overrides the derived one.</span></div>
 
@@ -312,7 +312,7 @@
 
   var NS='http://www.w3.org/2000/svg', svg=document.getElementById('stage');
   var C={ink:'#1b2620',text:'#5f6a60',faint:'#98a09a',guide:'#93a897',
-         green:'#14402e',tint:'#e8f0ec',bronze:'#8a7b4e',neutral:'#5f6a60',
+         green:'#14402e',tint:'#e8f0ec',mark2:'#767b78',neutral:'#5f6a60',
          hair:'#ececea',ghost:'#c4c9c3',dim:'#b9beb8'};
   var MONO='ui-monospace,Menlo,monospace', SERIF='Newsreader,Iowan Old Style,Palatino,Georgia,serif';
 
@@ -347,13 +347,12 @@
   g3.appendChild(el('line',{x1:80,y1:300,x2:740,y2:300,stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
   g3.appendChild(el('line',{x1:80,y1:108,x2:104,y2:108,stroke:C.green,'stroke-width':1.4}));
   txt(g3,{x:112,y:112,'font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.green},'MARCUS');
-  g3.appendChild(el('line',{x1:80,y1:318,x2:104,y2:318,stroke:C.bronze,'stroke-width':1.4}));
-  txt(g3,{x:112,y:322,'font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.bronze},'HIS WIFE');
+  g3.appendChild(el('line',{x1:80,y1:318,x2:104,y2:318,stroke:C.mark2,'stroke-width':1.4}));
+  txt(g3,{x:112,y:322,'font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.mark2},'HIS WIFE');
 
   /* 04 -- one thing between them, not a merge */
   var g4=layer('align');
-  g4.appendChild(el('rect',{x:350,y:186,width:120,height:30,rx:3,fill:C.tint,stroke:C.green,'stroke-width':1.2}));
-  txt(g4,{x:410,y:238,'text-anchor':'middle','font-family':MONO,'font-size':9,'letter-spacing':1.4,fill:C.faint},
+  txt(g4,{x:410,y:207,'text-anchor':'middle','font-family':MONO,'font-size':10,'letter-spacing':1.4,fill:C.text},
       'ONE THING, BETWEEN THEM');
 
   /* 06 -- two anchors, a span, and the questions that open along it */
@@ -383,7 +382,7 @@
       ? [['01','What you believe about impact',1],['02','Where you and your partner stand',0],['03','What you give through',0]]
       : [['01','What you believe about impact',0],['02','What you give through',0],['03','Where you and your partner stand',0]];
     var ys=[112,182,252];
-    g.appendChild(el('path',{d:'M330 172 L520 127 M520 127 L520 197 M520 197 L520 267 M520 267 L620 316',
+    g.appendChild(el('path',{d:'M330 172 L520 127 M520 127 L520 197 M520 197 L520 267',
       fill:'none',stroke:C.guide,'stroke-width':1,'stroke-dasharray':'3 5'}));
     labels.forEach(function(d,i){
       var y=ys[i], filled=d[2];
@@ -392,11 +391,10 @@
       txt(g,{x:536,y:y+20,'font-family':MONO,'font-size':9.5,'letter-spacing':.6,
         fill:filled?'#ffffff':C.green}, d[0]+' · '+d[1].toUpperCase());
     });
-    g.appendChild(el('circle',{cx:626,cy:322,r:9,fill:'none',stroke:C.green,'stroke-width':2,'stroke-dasharray':'3 3'}));
     if(done){
       g.appendChild(el('path',{d:'M522 127 C430 96, 330 96, 292 148',fill:'none',stroke:C.green,'stroke-width':1.2}));
       g.appendChild(el('path',{d:'M299 141 l-8 8 10 4',fill:'none',stroke:C.green,'stroke-width':1.2}));
-      txt(g,{x:786,y:302,'text-anchor':'end','font-family':MONO,'font-size':8.5,'letter-spacing':1.2,fill:C.bronze},
+      txt(g,{x:786,y:302,'text-anchor':'end','font-family':MONO,'font-size':8.5,'letter-spacing':1.2,fill:C.text},
           'REORDERED');
     }
   }
@@ -434,24 +432,24 @@
     if(s===1) return {cx:170+rnd(i,1,280), cy:200+rnd(i,2,250), r:r*.75, fill:C.neutral, op:.30};
     if(s===2) return {cx:x0+(n.year-1)*span+rnd(i,1,30), cy:200+rnd(i,2,190), r:r, fill:C.neutral, op:.5};
     if(s===3) return {cx:x0+(n.year-1)*span+rnd(i,1,30), cy:(n.owner==='m'?150:270)+rnd(i,3,54), r:r,
-                      fill:n.owner==='m'?C.green:C.bronze, op:.68};
+                      fill:n.owner==='m'?C.green:C.mark2, op:.68};
     if(s===4) return {cx:x0+(n.year-1)*span+rnd(i,1,30), cy:(n.owner==='m'?134:286)+rnd(i,3,46), r:r,
-                      fill:n.owner==='m'?C.green:C.bronze, op:.58};
+                      fill:n.owner==='m'?C.green:C.mark2, op:.58};
     if(s===5) return {cx:410+rnd(i,4,190), cy:200+rnd(i,5,110), r:r*.68, fill:C.neutral, op:.24};
     if(s===6){var t6=i/(nodes.length-1);
       return {cx:200+t6*420+rnd(i,6,22), cy:200+rnd(i,7,74), r:r*.72, fill:C.neutral, op:.34};}
     if(s===7){var a7=(i/nodes.length)*Math.PI*2+rnd(i,8,2.6), d7=30+Math.abs(rnd(i,9,168));
       return {cx:300+Math.cos(a7)*d7, cy:200+Math.sin(a7)*d7*.92, r:r*.9,
-              fill:n.owner==='m'?C.green:C.bronze, op:.72};}
+              fill:n.owner==='m'?C.green:C.mark2, op:.72};}
     if(s===8){var a8=(i/nodes.length)*Math.PI*2, r8=26+((i*37)%58);
       return {cx:240+Math.cos(a8)*r8, cy:200+Math.sin(a8)*r8*.88, r:r*.78,
-              fill:n.owner==='m'?C.green:C.bronze, op:.66};}
+              fill:n.owner==='m'?C.green:C.mark2, op:.66};}
     if(s===9){var a9=(i/nodes.length)*Math.PI*2+0.7, r9=24+((i*53)%62);
       return {cx:240+Math.cos(a9)*r9, cy:200+Math.sin(a9)*r9*.88, r:r*.78,
-              fill:n.owner==='m'?C.green:C.bronze, op:.66};}
+              fill:n.owner==='m'?C.green:C.mark2, op:.66};}
     var t=i/(nodes.length-1);
     return {cx:411+rnd(i,6,112*(1-t)+8), cy:96+t*206, r:r*(.72-t*.34),
-            fill:n.owner==='m'?C.green:C.bronze, op:.30+t*.42};
+            fill:n.owner==='m'?C.green:C.mark2, op:.30+t*.42};
   }
 
   var LAYERS={1:['one'],2:['marcus'],3:['bands'],4:['bands','align'],5:[],
@@ -468,7 +466,7 @@
     3:{n:"It turns out, it was not a selection problem. What came out of his Discovery was that he and his wife had been giving separately the entire time. Two sets of instincts about what mattered, eleven years of it, described between them as the family's giving yet never once compared.",
        w:'No new image. The identical field reorganises into two bodies, labelled as the two people. The apparatus appears here for the first time, because this is the first thing the product does.'},
     4:{n:"Once they could see it, they could work on it. The third thing in Marcus's plan is a conversation with his wife. Most people have something like this. Very few know it.",
-       w:'The two stay separate. One thing enters between them. Not a join, because they did not merge.'},
+       w:'The two stay separate and the gap between them opens. Nothing is drawn into it, because nothing joined. They did not merge.'},
     5:{n:"Giving Intelligence is a new way to approach your philanthropic giving. It gives you clarity about what you are trying to do, and a practice built to do it.",
        w:'The hard transition. His marks lose their specificity and go quiet. Marcus stops being the subject. Apparatus off, because nothing is being organised in this beat.'},
     6:{n:"Giving Intelligence starts by finding out where you are and where you want to go. We ask you things most people are never asked about their giving. What you are for. What you got out of. What you want to be true by the end of it.",
@@ -476,7 +474,7 @@
     7:{n:"What comes back is a picture of you. A picture you can act on.",
        w:'The same marks gather into one shape, still carrying their two origins, but not yet sorted. Nothing inside it is picked out, because the sorting is what the practice does.'},
     8:{n:"Then we build a Giving Practice, unique to where you are starting from and to your giving goals. A Giving Practice is more than a plan. It is the work itself: the conversations, the decisions, the people you bring in.",
-       w:'The picture tightens, and the practice comes out of it. Three modules in sequence, and a route running from the picture toward where you want to go.'},
+       w:'The picture tightens, and the practice comes out of it. Three modules in sequence, running from the picture into the work itself.'},
     9:{n:"As you work, your thinking gets sharper. Your practice follows.",
        w:'One module completes. What it produced goes back into the picture, the picture moves, and the rest of the route reorders behind it.'},
     10:{n:"When you're ready, we can create your own Giving Practice today.",
