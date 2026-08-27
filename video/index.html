@@ -47,8 +47,15 @@
 
   .scrub{flex:1 1 auto;padding:9px 0;cursor:pointer;border:0;background:transparent;display:block;width:100%}
   .scrub:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:4px}
-  .track{height:6px;border-radius:3px;background:var(--border);overflow:hidden}
-  .fill{height:100%;width:0;background:var(--green);border-radius:3px}
+  .track{display:block;height:6px;border-radius:3px;background:var(--border-strong);overflow:hidden}
+  .fill{display:block;height:100%;width:0;background:var(--green);border-radius:3px}
+
+  .mute{flex:0 0 auto;width:30px;height:30px;padding:0;display:inline-flex;
+     align-items:center;justify-content:center;background:transparent;border:0;
+     border-radius:999px;color:var(--text-faint);cursor:pointer;transition:color .18s}
+  .mute:hover{color:var(--green)}
+  .mute:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .mute svg{display:block}
 
   .clock{flex:0 0 auto;font-family:var(--mono);font-size:11.5px;color:var(--text-faint);
          font-variant-numeric:tabular-nums;letter-spacing:.04em}
@@ -137,6 +144,11 @@
   table.dwell .jump .num{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
      color:var(--text-faint);margin-right:8px}
   table.dwell input{width:64px}
+  table.dwell input:disabled{background:var(--bg);color:var(--text-faint);
+     border-color:var(--border);cursor:default}
+  table.dwell tr.aud input{border-color:var(--border);color:var(--ink)}
+  table.dwell tr.aud .src{color:var(--green);cursor:default;text-decoration:none}
+  .anote{font-size:12px;color:var(--text-faint);margin:0 0 13px;max-width:38ch}
   table.dwell tr.over input{border-color:var(--green);color:var(--green)}
   table.dwell .src{background:transparent;border:0;padding:2px 0;font-family:var(--mono);
      font-size:9px;letter-spacing:.1em;color:var(--text-faint)}
@@ -196,6 +208,7 @@
       <button type="button" class="play" id="play" aria-label="Run through">
         <span id="playIcon"></span><span id="playLabel">Run through</span>
       </button>
+      <button type="button" class="mute" id="mute" aria-pressed="false" aria-label="Mute the narration" title="Mute"></button>
       <button type="button" class="scrub" id="scrub" aria-label="Seek through the ten panels">
         <span class="track"><span class="fill" id="fill"></span></span>
       </button>
@@ -210,6 +223,7 @@
 
     <p class="vo" id="vo"></p>
     <p class="sr" id="live" aria-live="polite"></p>
+    <div id="clips" hidden aria-hidden="true"></div>
   </div>
 
   <div class="prod">
@@ -242,6 +256,12 @@
             <option value="cubic-bezier(.34,1.3,.64,1)">Overshoot</option>
             <option value="linear">Linear</option>
           </select></div>
+
+        <h3 class="mt">Audio</h3>
+        <p class="anote" id="audioNote"></p>
+        <div class="row"><label for="rTail">Tail</label>
+          <input id="rTail" type="range" min="0" max="3000" step="50">
+          <input id="nTail" type="number" min="0" max="9000" step="10" aria-label="Tail, milliseconds"></div>
 
         <h3 class="mt">For the source</h3>
         <div class="acts">
@@ -282,6 +302,8 @@
 
     <div class="note"><b>Pacing</b><span>A panel holds for as long as its narration takes to read aloud, so the clock is computed from the script rather than hand set, and moves when the script does. Pace, lead in, travel and the easing curve are all editable under Timing above, and any panel can be given a fixed hold that overrides the derived one.</span></div>
 
+    <div class="note"><b>Where the audio goes</b><span>Clips live in <code>vo/</code>, named 01.mp3 through 10.mp3, one per panel. A panel that has a clip is timed by that clip and the voice becomes the clock, so the panels cannot drift from the read. A panel with no clip keeps its derived hold, which means the film runs at any stage of recording.</span></div>
+
     <div class="note"><b>Status of the copy</b><span>The narration is a voice over draft and stands in for the real thing. Donor wording is Johny's call.</span></div>
   </div>
 
@@ -308,6 +330,19 @@
     fade:           450,                    // apparatus layers and caption crossfade
     ease:           'cubic-bezier(.4,0,.2,1)',
     dwell:          {}                      // per panel overrides, e.g. { 5: 12000 }
+  };
+
+  /* ============ AUDIO ===================================================
+     Drop clips into the folder below, named 01.mp3 through 10.mp3, one per
+     panel. Any panel with a clip is timed by that clip, and the rest keep
+     their derived hold, so the film still runs while it is being recorded.
+     ===================================================================== */
+  var AUDIO={
+    enabled: true,
+    dir:     'vo/',        // folder the clips live in, relative to this file
+    ext:     '.mp3',
+    files:   {},           // filename override, e.g. { 2: 'marcus-take3.mp3' }
+    tail:    600           // ms of silence held after a clip before the next panel
   };
 
   var NS='http://www.w3.org/2000/svg', svg=document.getElementById('stage');
@@ -483,23 +518,62 @@
 
   /* ---- timing engine ---- */
   var N=10, DW=[], CUM=[0], TOTAL=0;
-  var STORE='gi-narrative-timing', BASE=JSON.stringify(TIMING);
+  var STORE='gi-narrative-timing', BASE=JSON.stringify([TIMING,AUDIO]);
 
   function clone(o){ return JSON.parse(JSON.stringify(o)); }
-  var T=clone(TIMING);
+  var T=clone(TIMING), AU={enabled:AUDIO.enabled, tail:AUDIO.tail};
   /* Anything tuned in the browser is kept per browser, but the source wins:
      if TIMING above is edited, the stored copy is discarded on next load. */
   try{
     var saved=JSON.parse(localStorage.getItem(STORE)||'null');
-    if(saved && saved.base===BASE && saved.value) T=saved.value;
+    if(saved && saved.base===BASE && saved.value){
+      T=saved.value;
+      if(saved.audio) AU=saved.audio;
+    }
   }catch(e){}
   function stored(){ try{ return !!localStorage.getItem(STORE); }catch(e){ return false; } }
-  function save(){ try{ localStorage.setItem(STORE,JSON.stringify({base:BASE,value:T})); }catch(e){} }
+  function save(){ try{ localStorage.setItem(STORE,JSON.stringify({base:BASE,value:T,audio:AU})); }catch(e){} }
   function forget(){ try{ localStorage.removeItem(STORE); }catch(e){} }
+
+  var A=[];  /* one entry per panel: {el, ready, dur} */
+  function clipName(s){ return AUDIO.files[s] || ('0'+s).slice(-2)+AUDIO.ext; }
+  function hasClip(s){ return !!(AU.enabled && A[s-1] && A[s-1].ready); }
+  function clipCount(){ var n=0; for(var s=1;s<=N;s++) if(hasClip(s)) n++; return n; }
+
+  function initAudio(){
+    A=[]; for(var i=0;i<N;i++) A.push({el:null,ready:false,dur:0});
+    if(typeof Audio==='undefined') return;
+    var host=document.getElementById('clips');
+    for(var s=1;s<=N;s++){
+      (function(pn){
+        var a=A[pn-1], el=new Audio();
+        el.preload='auto'; el.src=AUDIO.dir+clipName(pn);
+        el.addEventListener('loadedmetadata',function(){
+          if(!isFinite(el.duration) || el.duration<=0) return;
+          a.ready=true; a.dur=el.duration; recompute(); syncUI(); paint();
+        });
+        el.addEventListener('error',function(){ a.ready=false; syncUI(); });
+        a.el=el; host.appendChild(el);
+      })(s);
+    }
+  }
 
   function derived(s){ return Math.round(T.leadIn+(COPY[s].n.split(/\s+/).length/T.wordsPerSecond)*1000); }
   function isOver(s){ return T.dwell[s]!==undefined && T.dwell[s]!==null; }
-  function dwellOf(s){ return isOver(s) ? Math.max(0,T.dwell[s]) : derived(s); }
+  function dwellOf(s){
+    if(hasClip(s)) return Math.round(A[s-1].dur*1000 + AU.tail);
+    return isOver(s) ? Math.max(0,T.dwell[s]) : derived(s);
+  }
+  function dwellSrc(s){ return hasClip(s) ? 'AUDIO' : (isOver(s) ? 'SET' : 'DERIVED'); }
+
+  var muted=false;
+  function stopClip(s){ var a=A[s-1]; if(a&&a.el){ try{ a.el.pause(); a.el.currentTime=0; }catch(e){} } }
+  function pauseClip(s){ var a=A[s-1]; if(a&&a.el){ try{ a.el.pause(); }catch(e){} } }
+  function playClip(s){
+    if(!hasClip(s)) return;
+    var el=A[s-1].el; el.muted=muted;
+    var pr=el.play(); if(pr && pr.catch) pr.catch(function(){});
+  }
   function recompute(){
     DW=[]; CUM=[0]; TOTAL=0;
     for(var s=1;s<=N;s++){ var ms=dwellOf(s); DW.push(ms); TOTAL+=ms; CUM.push(TOTAL); }
@@ -522,11 +596,14 @@
       indexEl=document.getElementById('index');
 
   var tAll=document.getElementById('tAll'), runtime=document.getElementById('runtime'),
-      cfgEl=document.getElementById('cfg'), storeNote=document.getElementById('storeNote');
+      cfgEl=document.getElementById('cfg'), storeNote=document.getElementById('storeNote'),
+      muteBtn=document.getElementById('mute'), audioNote=document.getElementById('audioNote');
 
   var ICON={
     play:'<svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor" aria-hidden="true"><path d="M0 0l9 5.5L0 11z"/></svg>',
     pause:'<svg width="9" height="11" viewBox="0 0 9 11" fill="currentColor" aria-hidden="true"><rect width="3" height="11"/><rect x="6" width="3" height="11"/></svg>',
+    on:'<svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M1 5.2h2.6L7 2.1v9.8L3.6 8.8H1z" fill="currentColor"/><path d="M9.6 4.9a3.4 3.4 0 0 1 0 4.2M11.7 3a6 6 0 0 1 0 8"/></svg>',
+    off:'<svg width="15" height="14" viewBox="0 0 15 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M1 5.2h2.6L7 2.1v9.8L3.6 8.8H1z" fill="currentColor"/><path d="M10 5.4l3.4 3.4M13.4 5.4L10 8.8" stroke-linecap="round"/></svg>',
     replay:'<svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9.8 5.5a4.3 4.3 0 1 1-1.4-3.2"/><path d="M10.2.9v3h-3"/></svg>'
   };
 
@@ -543,11 +620,13 @@
   }
 
   /* ---- playback ---- */
-  var cur=1, playing=false, ended=false, t0=0, rafId=null;
+  var cur=1, playing=false, ended=false, t0=0, held=0, rafId=null;
 
+  function inPanel(){
+    return playing ? Math.min(Math.max(0, performance.now()-t0), DW[cur-1]) : held;
+  }
   function paint(){
-    var e = CUM[cur-1] + (playing ? Math.min(performance.now()-t0, DW[cur-1]) : 0);
-    if(ended) e=TOTAL;
+    var e = ended ? TOTAL : CUM[cur-1]+inPanel();
     fill.style.width=(e/TOTAL*100).toFixed(2)+'%';
     tNow.textContent=mmss(e);
   }
@@ -559,7 +638,9 @@
   }
 
   function go(s){
-    cur=s; ended=false; t0=performance.now();
+    stopClip(cur); if(s!==cur) stopClip(s);
+    cur=s; ended=false; held=0; t0=performance.now();
+    if(playing) playClip(s);
     nodes.forEach(function(n){
       var p=pos(s,n);
       n.el.setAttribute('cx',p.cx.toFixed(1));
@@ -580,6 +661,11 @@
   }
 
   function tick(){
+    /* while a clip is running it is the clock, so the panels cannot drift from the voice */
+    var a=A[cur-1];
+    if(a && a.ready && a.el && !a.el.paused && !a.el.ended)
+      t0 = performance.now() - a.el.currentTime*1000;
+
     if(performance.now()-t0 >= DW[cur-1]){
       if(cur===N){ finish(); return; }
       go(cur+1);
@@ -589,20 +675,22 @@
   }
 
   function start(){
-    if(ended) go(1);
+    if(ended){ go(1); held=0; }
     playing=true; setButton();
-    t0=performance.now();
+    t0=performance.now()-held;          /* resume where it was paused */
+    playClip(cur);
     rafId=requestAnimationFrame(tick);
   }
   function pause(){
     if(!playing) return;
-    var held=Math.min(performance.now()-t0, DW[cur-1]);
+    held=Math.min(Math.max(0, performance.now()-t0), DW[cur-1]);
     playing=false; cancelAnimationFrame(rafId); rafId=null;
-    t0=performance.now()-held;
+    pauseClip(cur);
     setButton(); paint();
   }
   function finish(){
     playing=false; ended=true; cancelAnimationFrame(rafId); rafId=null;
+    pauseClip(cur);
     setButton(); paint();
   }
 
@@ -611,9 +699,7 @@
   scrub.addEventListener('click',function(e){
     var r=scrub.getBoundingClientRect(), at=(e.clientX-r.left)/r.width*TOTAL, s=N;
     for(var j=1;j<=N;j++){ if(at < CUM[j]){ s=j; break; } }
-    var wasPlaying=playing;
     go(s);
-    if(wasPlaying){ playing=true; t0=performance.now(); setButton(); }
   });
 
   document.addEventListener('keydown',function(e){
@@ -647,6 +733,7 @@
     {k:'wordsPerSecond',r:'rWps',   n:'nWps',   dec:2},
     {k:'leadIn',        r:'rLead',  n:'nLead',  dec:0}
   ];
+  var ACTL=[{k:'tail', r:'rTail', n:'nTail', dec:0}];
   var ease=document.getElementById('selEase'), rows=[];
 
   function cfgText(){
@@ -660,6 +747,13 @@
       '  fade:           '+Math.round(T.fade)+',\n'+
       "  ease:           '"+T.ease+"',\n"+
       '  dwell:          {'+(d.length?' '+d.join(', ')+' ':'')+'}\n'+
+      '};\n\n'+
+      'var AUDIO={\n'+
+      '  enabled: '+(AU.enabled?'true':'false')+',\n'+
+      "  dir:     '"+AUDIO.dir+"',\n"+
+      "  ext:     '"+AUDIO.ext+"',\n"+
+      '  files:   '+JSON.stringify(AUDIO.files)+',\n'+
+      '  tail:    '+Math.round(AU.tail)+'\n'+
       '};';
   }
 
@@ -681,7 +775,7 @@
           if(isFinite(v) && v>0){ T.dwell[pn]=Math.round(v*1000); changed(); }
         });
         src.addEventListener('click',function(){
-          if(!isOver(pn)) return;
+          if(hasClip(pn) || !isOver(pn)) return;
           delete T.dwell[pn]; changed(); inp.value=(dwellOf(pn)/1000).toFixed(1);
         });
         tb.appendChild(tr);
@@ -696,6 +790,10 @@
       document.getElementById(c.r).value=v;
       document.getElementById(c.n).value=c.dec?(+v).toFixed(c.dec):Math.round(v);
     });
+    ACTL.forEach(function(c){
+      document.getElementById(c.r).value=AU[c.k];
+      document.getElementById(c.n).value=Math.round(AU[c.k]);
+    });
     ease.value=T.ease;
     if(!ease.selectedOptions.length){                 // a curve typed into the source
       var o=document.createElement('option');
@@ -709,27 +807,50 @@
     runtime.textContent=mmss(TOTAL);
     cfgEl.textContent=cfgText();
     storeNote.textContent=stored()?'Tuned in this browser.':'';
+
+    var n=clipCount();
+    audioNote.textContent = !AU.enabled ? 'Off. Every panel runs on its derived hold.'
+      : n===0 ? 'No clips found in '+AUDIO.dir+'. Every panel runs on its derived hold.'
+      : n===N ? 'All '+N+' clips loaded. The voice is the clock.'
+      : n+' of '+N+' clips loaded. The rest run on their derived hold.';
+
     rows.forEach(function(r){
-      var over=isOver(r.pn);
+      var aud=hasClip(r.pn), over=!aud&&isOver(r.pn);
+      r.tr.classList.toggle('aud',aud);
       r.tr.classList.toggle('over',over);
-      r.src.textContent=over?'SET':'DERIVED';
-      r.src.title=over?'Revert to the derived hold':'Derived from the narration';
+      r.src.textContent=dwellSrc(r.pn);
+      r.src.title=aud?'Timed by '+clipName(r.pn)
+                 :over?'Revert to the derived hold':'Derived from the narration';
+      r.inp.disabled=aud;
       if(document.activeElement!==r.inp) r.inp.value=(dwellOf(r.pn)/1000).toFixed(1);
     });
   }
 
   function changed(){ applyMotion(); recompute(); syncUI(); save(); paint(); }
 
-  CTL.forEach(function(c){
-    var rg=document.getElementById(c.r), nm=document.getElementById(c.n);
-    function take(v,peer){
-      v=parseFloat(v);
-      if(!isFinite(v)||v<0) return;
-      T[c.k]=v; peer.value=c.dec?v.toFixed(c.dec):Math.round(v); changed();
-    }
-    rg.addEventListener('input',function(){ take(rg.value,nm); });
-    nm.addEventListener('input',function(){ take(nm.value,rg); });
+  function bind(list,store){
+    list.forEach(function(c){
+      var rg=document.getElementById(c.r), nm=document.getElementById(c.n);
+      function take(v,peer){
+        v=parseFloat(v);
+        if(!isFinite(v)||v<0) return;
+        store[c.k]=v; peer.value=c.dec?v.toFixed(c.dec):Math.round(v); changed();
+      }
+      rg.addEventListener('input',function(){ take(rg.value,nm); });
+      nm.addEventListener('input',function(){ take(nm.value,rg); });
+    });
+  }
+  bind(CTL,T); bind(ACTL,AU);
+
+  muteBtn.addEventListener('click',function(){
+    muted=!muted;
+    for(var s=1;s<=N;s++) if(A[s-1]&&A[s-1].el) A[s-1].el.muted=muted;
+    muteBtn.setAttribute('aria-pressed',muted?'true':'false');
+    muteBtn.setAttribute('aria-label',muted?'Unmute the narration':'Mute the narration');
+    muteBtn.title=muted?'Unmute':'Mute';
+    muteBtn.innerHTML=muted?ICON.off:ICON.on;
   });
+  muteBtn.innerHTML=ICON.on;
   ease.addEventListener('change',function(){ T.ease=ease.value; changed(); });
 
   document.getElementById('btnCopy').addEventListener('click',function(){
@@ -745,11 +866,11 @@
   });
 
   document.getElementById('btnReset').addEventListener('click',function(){
-    forget(); T=clone(TIMING);
+    forget(); T=clone(TIMING); AU={enabled:AUDIO.enabled, tail:AUDIO.tail};
     applyMotion(); recompute(); setControls(); syncUI(); paint();
   });
 
-  buildRows(); setControls(); applyMotion(); recompute(); syncUI();
+  buildRows(); setControls(); applyMotion(); recompute(); syncUI(); initAudio();
 
   var nt=document.getElementById('notesToggle');
   nt.addEventListener('click',function(){
