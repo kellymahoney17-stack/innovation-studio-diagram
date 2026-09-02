@@ -1,0 +1,457 @@
+<title>School AI Approaches</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f9fafb;
+    --surface-2: #f3f4f6;
+    --text: #101715;
+    --text-secondary: #4a5551;
+    --text-tertiary: #98a19d;
+    --border: #e5e7eb;
+    --border-light: #f3f4f6;
+    --accent: #059669;
+    --accent-subtle: #ecfdf5;
+    --warning: #d97706;
+    --ramp-1: #dfe3e1;
+    --ramp-2: #b9c1be;
+    --ramp-3: #8b9591;
+    --ramp-4: #56605c;
+    --ramp-5: #2b3330;
+    --ramp-text-light: #101715;
+    --ramp-text-dark: #ffffff;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0e1512;
+      --surface: #151d19;
+      --surface-2: #1b2420;
+      --text: #e9efec;
+      --text-secondary: #a3aeaa;
+      --text-tertiary: #6e7a75;
+      --border: #232d29;
+      --border-light: #1b2420;
+      --accent: #34d399;
+      --accent-subtle: #10261e;
+      --warning: #f59e0b;
+      --ramp-1: #2b3733;
+      --ramp-2: #3d4b46;
+      --ramp-3: #5c6b65;
+      --ramp-4: #8ba099;
+      --ramp-5: #cfdad5;
+      --ramp-text-light: #e9efec;
+      --ramp-text-dark: #0e1512;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0e1512;
+    --surface: #151d19;
+    --surface-2: #1b2420;
+    --text: #e9efec;
+    --text-secondary: #a3aeaa;
+    --text-tertiary: #6e7a75;
+    --border: #232d29;
+    --border-light: #1b2420;
+    --accent: #34d399;
+    --accent-subtle: #10261e;
+    --warning: #f59e0b;
+    --ramp-1: #2b3733;
+    --ramp-2: #3d4b46;
+    --ramp-3: #5c6b65;
+    --ramp-4: #8ba099;
+    --ramp-5: #cfdad5;
+    --ramp-text-light: #e9efec;
+    --ramp-text-dark: #0e1512;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text-secondary);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 80px 24px 120px; }
+
+  a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+  a:hover { border-bottom-color: var(--accent); color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .eyebrow {
+    font-size: 11px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-tertiary);
+  }
+
+  h1 {
+    font-size: 34px; font-weight: 600; line-height: 1.2; letter-spacing: -0.025em;
+    color: var(--text); margin: 14px 0 0; text-wrap: balance;
+  }
+  .standfirst { font-size: 17px; line-height: 1.6; margin-top: 20px; max-width: 62ch; }
+  .byline {
+    margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text-tertiary);
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+  }
+
+  section { margin-top: 72px; }
+  h2 {
+    font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--text);
+    margin: 12px 0 20px; text-wrap: balance;
+  }
+  h3 {
+    font-size: 15px; font-weight: 600; color: var(--text);
+    margin: 32px 0 8px; letter-spacing: -0.01em;
+  }
+  p { margin: 0 0 18px; max-width: 66ch; }
+  section > p:last-child { margin-bottom: 0; }
+
+  .thesis {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px; margin-top: 40px;
+  }
+  .thesis p { font-size: 16px; color: var(--text); margin-bottom: 14px; }
+  .thesis p:last-child { margin-bottom: 0; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; margin: 28px 0 0;
+  }
+  .stat { background: var(--bg); padding: 18px 16px; }
+  .stat-value {
+    font-size: 23px; font-weight: 600; color: var(--text);
+    letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.2;
+  }
+  .stat-label { font-size: 12px; color: var(--text-tertiary); margin-top: 5px; line-height: 1.4; }
+
+  .ramp { margin: 26px 0 0; }
+  .ramp-bar { display: flex; height: 44px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+  .ramp-seg {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums;
+    min-width: 0; overflow: hidden;
+  }
+  .r1 { background: var(--ramp-1); color: var(--ramp-text-light); }
+  .r2 { background: var(--ramp-2); color: var(--ramp-text-light); }
+  .r3 { background: var(--ramp-3); color: var(--ramp-text-dark); }
+  .r4 { background: var(--ramp-4); color: var(--ramp-text-dark); }
+  .r5 { background: var(--ramp-5); color: var(--ramp-text-dark); }
+  .ramp-ends {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text-tertiary); margin-top: 8px;
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+  }
+  .caption { font-size: 12.5px; color: var(--text-secondary); margin-top: 12px; line-height: 1.55; max-width: 62ch; }
+
+  .axes { display: flex; flex-direction: column; gap: 1px; background: var(--border);
+          border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-top: 24px; }
+  .axis { background: var(--bg); padding: 18px 20px; }
+  .axis-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .axis-q { font-size: 13px; color: var(--text-secondary); margin-top: 3px; }
+  .axis-poles {
+    display: flex; justify-content: space-between; gap: 16px;
+    margin-top: 12px; font-size: 11px; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;
+  }
+  .axis-line { height: 3px; background: var(--surface-2); border-radius: 2px; margin-top: 6px; }
+
+  .profiles { display: flex; flex-direction: column; gap: 20px; margin-top: 24px; }
+  .profile { border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .profile-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .profile-name { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .share {
+    font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums; letter-spacing: 0.03em;
+  }
+  .profile p { font-size: 14px; margin: 10px 0 0; max-width: none; }
+  .profile dl { margin: 14px 0 0; display: grid; grid-template-columns: 92px 1fr; gap: 6px 14px; font-size: 13px; }
+  .profile dt { color: var(--text-tertiary); font-size: 11px; font-weight: 600;
+                text-transform: uppercase; letter-spacing: 0.05em; padding-top: 2px; }
+  .profile dd { margin: 0; color: var(--text-secondary); }
+
+  .tablewrap { overflow-x: auto; margin-top: 24px; border: 1px solid var(--border); border-radius: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; min-width: 560px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-light); vertical-align: top; }
+  th {
+    font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-tertiary); background: var(--surface); border-bottom: 1px solid var(--border);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td strong { color: var(--text); font-weight: 600; }
+
+  .callout {
+    background: var(--accent-subtle); border-radius: 6px; padding: 16px 18px;
+    font-size: 14px; margin: 24px 0 0; color: var(--text);
+  }
+  .callout p { margin: 0; max-width: none; }
+
+  ul { margin: 0 0 18px; padding-left: 20px; max-width: 66ch; }
+  li { margin-bottom: 8px; }
+  li::marker { color: var(--text-tertiary); }
+
+  .sources { margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--border); }
+  .sources ul { list-style: none; padding: 0; max-width: none; }
+  .sources li { font-size: 12.5px; margin-bottom: 9px; color: var(--text-tertiary); }
+
+  @media (max-width: 600px) {
+    .wrap { padding: 48px 20px 80px; }
+    h1 { font-size: 27px; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .profile dl { grid-template-columns: 1fr; gap: 2px; }
+    .profile dt { margin-top: 8px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Working brief</div>
+    <h1>How American schools are diverging on AI</h1>
+    <p class="standfirst">A landscape read of public and private middle and high school approaches, the taxonomy that falls out of the evidence, and what it implies for a parent-facing comparison tool.</p>
+    <div class="byline">
+      <span>Prepared for Kelly Mahoney</span>
+      <span>September 2026</span>
+      <span>Grades 6&ndash;12, United States</span>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <p>There is no national picture of how schools handle AI, and there will not be one soon &mdash; but the absence is the opportunity, not the obstacle. Roughly 78% of parents say a school's approach to AI now factors into where they educate their children, and no mainstream school-comparison platform captures it at all.</p>
+    <p>The evidence supports a taxonomy of approaches, not a directory of schools. The modal American school has a written AI policy that delegates the actual decision to individual teachers, which means the classroom, not the school, is the real unit of variation &mdash; and a tool that scores schools would be measuring something that mostly does not exist.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-value">78%</div><div class="stat-label">of parents weigh a school's AI approach when evaluating options</div></div>
+    <div class="stat"><div class="stat-value">~37</div><div class="stat-label">states plus Puerto Rico with official AI guidance</div></div>
+    <div class="stat"><div class="stat-value">44.3%</div><div class="stat-label">of coded districts sit at the conditional-permission midpoint</div></div>
+    <div class="stat"><div class="stat-value">10.7%</div><div class="stat-label">of district policies reference their own state's guidance</div></div>
+    <div class="stat"><div class="stat-value">52%</div><div class="stat-label">of districts notify parents which AI tools are in classrooms</div></div>
+    <div class="stat"><div class="stat-value">11%</div><div class="stat-label">of schools teach AI as a subject, by parent report</div></div>
+  </div>
+
+  <section>
+    <div class="eyebrow">One &mdash; The data terrain</div>
+    <h2>Three layers, three very different levels of visibility</h2>
+
+    <p>Any product built here inherits the shape of the underlying record, so the record is worth understanding before the interface is. American school AI policy exists in three strata that differ by an order of magnitude in how observable they are, and the temptation is to design as though they were uniform.</p>
+
+    <p>The state layer is solid. As of mid-2026, roughly 35 to 37 states plus Puerto Rico have issued official AI guidance through their departments of education, up from 31 in January 2026 and from just 13 states when the <a href="https://crpe.org/ai-disrupt-ed-13-states/">Center on Reinventing Public Education</a> first counted. This layer is already curated and maintained by third parties: <a href="https://www.aiforeducation.io/ai-resources/state-ai-guidance">AI for Education</a> tracks the guidance documents, <a href="https://ballotpedia.org/AI_guidance_issued_by_state_departments_of_education">Ballotpedia</a> maintains a state-by-state index, and <a href="https://www.future-ed.org/legislative-tracker-2026-state-ai-in-education-bills/">FutureEd</a> is tracking 77 bills across 27 states in the 2026 session alone. It is free, current, and cheap to keep current.</p>
+
+    <p>What that layer is undergoing right now matters for the product's shelf life. Through fall 2025 the dominant mode of state action was voluntary guidance; by the 2026 session it had begun converting into law. Idaho, Utah and New York have enacted K-12 AI education statutes, with active legislation in 25 more states (<a href="https://www.multistate.us/insider/2026/4/9/how-states-are-regulating-ai-in-education-this-legislative-session">MultiState, April 2026</a>). The enacted and pending texts differ in ways that will produce real divergence: Maryland requires its state department to issue guidance and obliges local systems to adopt AI policies and promote AI literacy, while California's model policy is expressly labeled exemplary and nonmandatory. Oklahoma's pending SB 1734 would permit AI only under educator supervision with human review, bar its use in high-stakes student decisions, and require annual parent disclosure. West Virginia's HB 5205 would impose state model policies automatically on any district that fails to adopt a compliant local one by July 2027.</p>
+
+    <p>The district layer is patchy, but a seed dataset exists. The <a href="https://policy.aiandeducationstudio.com/">AI School Policy Database</a>, built by the AI and Education Studio and reported by <a href="https://www.edsurge.com/news/study-the-national-ai-policy-landscape-in-k-12-education">EdSurge</a>, coded 122 districts and schools across 38 states against a five-level policy continuum, using only publicly available documents &mdash; board policies, acceptable use policies, staff and student handbooks, official websites. That methodology is worth noting, because it is the same methodology any parent-facing tool would have to use, and it is reproducible.</p>
+
+    <p>Two findings from that database do a lot of analytical work. The first is the distribution:</p>
+
+    <div class="ramp">
+      <div class="ramp-bar">
+        <div class="ramp-seg r1" style="flex: 3.3" title="Level 1 — 3.3%">3.3</div>
+        <div class="ramp-seg r2" style="flex: 27.9" title="Level 2 — 27.9%">27.9</div>
+        <div class="ramp-seg r3" style="flex: 44.3" title="Level 3 — 44.3%">44.3</div>
+        <div class="ramp-seg r4" style="flex: 17.2" title="Level 4 — 17.2%">17.2</div>
+        <div class="ramp-seg r5" style="flex: 7.4" title="Level 5 — 7.4%">7.4</div>
+      </div>
+      <div class="ramp-ends"><span>Level 1 &mdash; most integrated</span><span>Level 5 &mdash; prohibited</span></div>
+      <p class="caption">Share of 122 coded districts and schools at each level of the AI policy continuum (AI and Education Studio, 2026). The ramp is deliberately neutral rather than red-to-green: the direction of the scale is descriptive, and treating permissiveness as the good end would encode a judgment the evidence does not support.</p>
+    </div>
+
+    <p>The published definitions of the restrictive end are explicit. Level 4 tightly restricts AI use or permits it only with teacher approval, allows only vetted tools, and emphasizes enforcement and penalties. Level 5 prohibits AI outright or treats it as plagiarism, offers no authorized pathway for student use, and applies discipline or zeroes as consequences. Together they account for roughly a quarter of coded systems. The definitions of Levels 1 through 3 were not published alongside the level-4 and level-5 language and should be verified directly against the database before any of it is reproduced in a product.</p>
+
+    <p>The second finding is the more interesting one: 63% of the coded organizations sit in states that have official AI guidance, yet only 10.7% reference that guidance anywhere in their own policy documents. The state layer is largely decorative in practice. A tool that reports state guidance to a parent as though it described their child's school would be reporting something that six out of seven districts do not appear to have read.</p>
+
+    <p>The private layer is close to invisible, and this is the hardest constraint on the whole idea. There is no registry. The National Association of Independent Schools publishes <a href="https://www.nais.org/resource-center/resources/ai-resources-for-schools-and-educators/">frameworks and trustee guidance</a>, but independent schools face no public-records obligation, publish selectively, and move fastest precisely because they answer to boards rather than statutes. What exists is audit-style research on small samples. A 2026 study of twenty top private K-12 schools found only three &mdash; Harvard-Westlake, The Dalton School, and Horace Mann &mdash; clearing a bar defined as institutional commitment, a named faculty owner of the AI program, a public framework, and AI courses formally in the course catalog (<a href="https://www.prnewswire.com/news-releases/harvard-westlake-dalton-and-horace-mann-named-the-only-three-schools-meeting-institutional-ai-bar-302780395.html">5W Research, 2026</a>). That four-part bar is a genuinely useful rubric and worth borrowing. The study itself came from a public relations firm and covered only elite schools in two metros, so the headline finding should be treated as directional rather than as a measurement.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Two &mdash; The frame</div>
+    <h2>Three independent questions, routinely collapsed into one</h2>
+
+    <p>Nearly all popular coverage, and most district policy documents, treat "the school's AI position" as a single variable running from banned to embraced. It is not one variable. It is three, and they move independently enough that a school's position on one predicts very little about its position on the others.</p>
+
+    <div class="axes">
+      <div class="axis">
+        <div class="axis-name">Permission</div>
+        <div class="axis-q">What students are allowed to do with AI on their own work.</div>
+        <div class="axis-line"></div>
+        <div class="axis-poles"><span>Prohibited</span><span>Unrestricted</span></div>
+      </div>
+      <div class="axis">
+        <div class="axis-name">Infrastructure</div>
+        <div class="axis-q">What AI is deployed onto students, and what it collects about them.</div>
+        <div class="axis-line"></div>
+        <div class="axis-poles"><span>None deployed</span><span>Platform-wide</span></div>
+      </div>
+      <div class="axis">
+        <div class="axis-name">Instruction</div>
+        <div class="axis-q">What students are actually taught about how AI works and what it does.</div>
+        <div class="axis-line"></div>
+        <div class="axis-poles"><span>Nothing</span><span>Full pathway</span></div>
+      </div>
+    </div>
+
+    <p>The permission axis is the one families argue about, and it is fundamentally a conduct rule. It governs disclosure, drafting, homework, and the consequences for getting it wrong. It is also the axis most likely to be written down, because it is the one that generates disciplinary cases.</p>
+
+    <p>The infrastructure axis is nearly invisible to parents and carries the most consequential decisions. It covers adaptive courseware, tutoring bots, teacher-facing grading and planning tools, and the data agreements underneath them. The legal terrain here is specific: FERPA-protected education records cannot be sent to consumer ChatGPT, Claude or Gemini without prior written consent or a properly documented school-official designation under 34 CFR &sect; 99.31(a)(1), and the consumer tiers cannot satisfy that requirement because they carry no contract restricting data use. The enterprise tiers &mdash; ChatGPT Edu and Team, Gemini for Education inside Google Workspace for Education &mdash; do carry terms that ring-fence school data and bar its use for model training, but a compliant tool still requires a signed data protection agreement at the district level. OpenAI's terms prohibit use by children under 13 entirely and require parental permission for 13- to 18-year-olds, which puts a hard line straight through the middle of the sixth-to-twelfth-grade band.</p>
+
+    <p>The instruction axis is what most parents say they want and what almost no school provides. Two frameworks define the field. AI4K12, launched in 2018 by the Association for the Advancement of Artificial Intelligence and the Computer Science Teachers Association, organizes K-12 AI around five big ideas: perception, representation and reasoning, learning, natural interaction, and societal impact. <a href="https://digitalpromise.org/initiative/artificial-intelligence-in-education/ai-literacy/strategies-to-promote-ai-literacy-in-k-12/">Digital Promise</a>'s AI Literacy framework, published June 2024, uses a simpler three-part structure: understand, use, evaluate. Both have drifted toward reflective and evaluative competence over technical skill, which is a meaningful design signal &mdash; the field itself has concluded that AI literacy is closer to media literacy than to computer science.</p>
+
+    <p>The combinations are where this frame earns its keep. Phillips Exeter Academy runs an educator AI literacy program explicitly framed through its Harkness discussion pedagogy &mdash; high on instruction, deliberately conservative on permission. Choate Rosemary Hall pilots AI for foreign language immersion while restricting it in humanities essays &mdash; a single school occupying opposite ends of the permission axis by department. Houston ISD converted schools into an AI-focused model and now runs a district AI elective reaching more than 3,700 students across 41 schools, which is a large instruction commitment that says nothing about its homework rules. A parent who learns only that a school "allows AI" has learned almost nothing about any of this.</p>
+
+    <div class="callout">
+      <p>The three-axis separation is the analytical asset here. It is not currently how anyone in the market presents this information, and it resolves the specific confusion that makes parents feel they cannot get a straight answer from a school tour.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Three &mdash; The taxonomy</div>
+    <h2>Six postures the evidence actually supports</h2>
+
+    <p>The first four postures below are positions on the permission axis and are mutually exclusive; the district distribution data maps onto them directly. The last two are commitments on the infrastructure and instruction axes and combine freely with any of the first four. This is why a single ranked score fails: the object being described has more than one dimension, and collapsing it would tell a parent that Exeter and a district with no AI program at all are similar because both restrict homework use.</p>
+
+    <div class="profiles">
+
+      <div class="profile">
+        <div class="profile-head"><span class="profile-name">Prohibition</span><span class="share">~7% of coded districts</span></div>
+        <p>AI use is banned and treated as plagiarism. No authorized pathway exists for student use, and violations are handled with discipline or zeroes. This posture is now rare and shrinking, and its most famous instance reversed: New York City banned ChatGPT in January 2023 and lifted the ban that May, with the chancellor describing an explicit shift in mindset.</p>
+        <dl>
+          <dt>Signal</dt><dd>AI named in the academic integrity policy and nowhere else.</dd>
+          <dt>Trade-off</dt><dd>Clear rules; drives use underground and teaches nothing.</dd>
+        </dl>
+      </div>
+
+      <div class="profile">
+        <div class="profile-head"><span class="profile-name">Integrity-first, gated</span><span class="share">~17% of coded districts</span></div>
+        <p>Use is tightly restricted and permitted only with teacher approval, limited to vetted tools, with strong emphasis on enforcement. The distinction from prohibition is that an authorized pathway exists. Choate's restriction of AI in humanities essays while piloting it for language immersion is the characteristic shape: subject-by-subject judgment rather than a blanket rule.</p>
+        <dl>
+          <dt>Signal</dt><dd>An approved-tools list, and permission language tied to assignment type.</dd>
+          <dt>Trade-off</dt><dd>Protects assessment validity; heavily dependent on teacher enforcement capacity.</dd>
+        </dl>
+      </div>
+
+      <div class="profile">
+        <div class="profile-head"><span class="profile-name">Conditional, teacher-delegated</span><span class="share">~44% of coded districts</span></div>
+        <p>The modal American posture. A written policy exists, permits AI under conditions, and pushes the operative decision down to individual teachers without systemic curricular integration. In practice this means the school-level answer a parent receives is close to meaningless: the real policy is set classroom by classroom, and a student's experience depends on which teachers they draw. Roughly 30% of teachers already use AI weekly, against about 22% of schools having any established AI policy.</p>
+        <dl>
+          <dt>Signal</dt><dd>Policy language containing "at teacher discretion" with no accompanying guidance.</dd>
+          <dt>Trade-off</dt><dd>Preserves professional judgment; produces wide within-school inconsistency.</dd>
+        </dl>
+      </div>
+
+      <div class="profile">
+        <div class="profile-head"><span class="profile-name">Tiered and disclosed</span><span class="share">Emerging</span></div>
+        <p>Explicit tiers define how much AI is permitted per assignment type, paired with disclosure norms so students declare what they used. Miami-Dade's board voted in August 2025 to develop districtwide guidelines built on exactly this structure. Oklahoma's pending legislation would push in the same direction statewide by mandating annual parent disclosure.</p>
+        <dl>
+          <dt>Signal</dt><dd>A published tier scale students and parents can actually cite.</dd>
+          <dt>Trade-off</dt><dd>Legible and teachable; demands real assignment redesign to hold up.</dd>
+        </dl>
+      </div>
+
+      <div class="profile">
+        <div class="profile-head"><span class="profile-name">Vendor-integrated</span><span class="share">Infrastructure axis</span></div>
+        <p>The school deploys AI at platform scale &mdash; Gemini for Education, ChatGPT Edu, or a custom build &mdash; making it infrastructure rather than an option. Miami-Dade paired its tiered framework with a districtwide Google Gemini rollout for lesson planning and administration. The cautionary case is LAUSD's custom chatbot "Ed," commissioned for up to $6 million over five years and shut down after five months when the vendor, AllHere, furloughed most staff and a whistleblower raised privacy concerns. By June 2026 LAUSD had banned screen time before second grade, imposed restrictions on older students, and opened a review of its classroom technology contracts.</p>
+        <dl>
+          <dt>Signal</dt><dd>A named platform, a signed DPA, and a published approved-vendor list.</dd>
+          <dt>Trade-off</dt><dd>Consistency and compliance at scale; concentrates data risk and vendor dependency.</dd>
+        </dl>
+      </div>
+
+      <div class="profile">
+        <div class="profile-head"><span class="profile-name">Curriculum-forward</span><span class="share">Instruction axis</span></div>
+        <p>AI is taught as a subject, not merely governed as a behavior. The four markers from the private-school audit travel well to public schools: institutional commitment, a named faculty owner, a public framework, and AI courses formally in the catalog. Houston ISD's AI elective across 41 schools qualifies on the public side; Harvard-Westlake, Dalton and Horace Mann were the only three of twenty audited private schools to clear the bar. This is the posture parents most consistently say they want and least often find.</p>
+        <dl>
+          <dt>Signal</dt><dd>Courses in the catalog with a named owner, not a one-off assembly or advisory unit.</dd>
+          <dt>Trade-off</dt><dd>Builds durable literacy; costly, and vulnerable to the departure of one faculty member.</dd>
+        </dl>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">Four &mdash; Demand and white space</div>
+    <h2>Parents are already using this to choose schools, and nothing serves them</h2>
+
+    <p>The demand evidence is unusually direct for a category this young. A national survey of 2,053 parents of children aged 4 to 17, fielded 24&ndash;31 July 2026 by the National School Choice Awareness Foundation with a margin of error of &plusmn;2.2 points, found that 76% support at least some use of AI in schools and 78% say a school's approach to AI matters when they evaluate education options for their child (<a href="https://www.prnewswire.com/news-releases/new-survey-when-choosing-a-school-for-their-children-majority-of-parents-consider-artificial-intelligence-policies-302846600.html">NSCAF, August 2026</a>). School choice is the use case, stated by parents, unprompted by any product.</p>
+
+    <p>Support does not mean consensus, and the split is the product's actual design problem. Across 2026 surveys the population divides roughly into thirds &mdash; positive, negative, and mixed or uncertain (<a href="https://edtechmagazine.com/k12/article/2026/04/parents-divided-artificial-intelligence-heres-how-schools-can-build-trust">EdTech Magazine, April 2026</a>), a pattern echoed in state-level polling showing Massachusetts parents split (<a href="https://www.wbur.org/news/2026/01/21/parent-poll-ai-use-schools-massachusetts">WBUR, January 2026</a>) and in <a href="https://www.edchoice.org/2026-parents-divided-on-technology-and-student-preparation-for-life-after-graduation/">EdChoice</a>'s finding of division on technology generally. The concerns cluster around dependence rather than capability: roughly 48% name over-reliance on technology as their leading worry, about 70% cite loss of critical thinking, and 67% are concerned that AI makes cheating too easy. Against that, 42% identify personalized learning as the most valuable benefit, double the 21% who name career preparation (<a href="https://www.edweek.org/technology/how-do-parents-want-schools-to-handle-ai-insights-from-a-new-survey/2026/03">Education Week, March 2026</a>).</p>
+
+    <p>The gap between what parents want and what they can see is the wedge. Around 66% believe AI skills will be critical to their child's future while only about 11% report their school teaching AI, and only 52% of districts notify parents which specific AI tools are being used in their children's classrooms. Roughly eight in ten want more guardrails. These are not people who need to be persuaded the question matters; they are people who cannot get an answer.</p>
+
+    <p>No incumbent covers it. GreatSchools, the nonprofit founded in 1998, draws almost entirely on government-reported data, which does not include AI policy and will not for years. Niche, founded in 2002, layers parent and student reviews over academics, diversity, extracurriculars and facilities, and its <a href="https://www.niche.com/k12/compare/">K-12 compare tool</a> has no AI dimension. Neither platform rates AI policy at all. The one serious dataset, the AI School Policy Database, is a researcher-facing coded corpus of 122 systems, not a consumer product, and covers a fraction of a percent of American schools.</p>
+
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Player</th><th>Data source</th><th>AI coverage</th><th>Gap</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>GreatSchools</strong></td><td>Government-reported</td><td>None</td><td>AI policy is not a reported field and will not be soon</td></tr>
+          <tr><td><strong>Niche</strong></td><td>Reviews plus public data</td><td>None</td><td>Review prompts do not ask about AI</td></tr>
+          <tr><td><strong>AI School Policy Database</strong></td><td>Hand-coded documents</td><td>122 systems, 38 states</td><td>Researcher-facing; no parent interpretation layer</td></tr>
+          <tr><td><strong>AI for Education / Ballotpedia</strong></td><td>State guidance documents</td><td>State layer only</td><td>Only 10.7% of districts reference state guidance</td></tr>
+          <tr><td><strong>NAIS</strong></td><td>Member frameworks</td><td>Private schools, guidance only</td><td>No school-level comparison, members only</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The white space is real, but it is a specific shape: an interpretation layer, not a data layer. The state guidance is already curated by others; the district corpus is already coded by researchers; the private layer cannot be collected at scale by anyone. What nobody has built is the thing that converts any of it into a decision a parent can make.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Five &mdash; What this implies for the build</div>
+    <h2>An interpretation layer, seeded with real depth</h2>
+
+    <p>Three constraints follow from the evidence and should be treated as fixed. School-level coverage cannot be bought or scraped into existence, because for most schools the document does not exist and where it does it delegates to teachers. State guidance cannot stand in for school behavior, because six out of seven districts do not reference it. And a single score cannot represent the three axes without falsifying them.</p>
+
+    <p>What can be built immediately and honestly is a preference-to-posture engine with a diagnostic on the end. Preferences are elicited through forced trade-offs rather than a checklist, because the survey data shows parents endorse everything in the abstract &mdash; 76% support AI use and 70% fear loss of critical thinking, simultaneously. A trade-off surfaces the real ordering: a ninth grader drafts an essay with AI and discloses it, acceptable or not. The output ranks the six postures by fit, describes each one's day-to-day texture and honest downside, and names real schools that exemplify it.</p>
+
+    <p>The diagnostic is the part that survives the data problem. Because the school-level record is thin, the highest-value output is a personalized set of questions the parent asks the school directly, each paired with what a substantive answer sounds like and what an evasive one sounds like. Some of these are already sharp and public: which AI tools are approved, what data each collects, whether that data trains commercial models, retention periods, whether a signed data protection agreement exists, and how teachers are trained. Given that only 52% of districts disclose tool usage proactively, the question list is doing work no database could do &mdash; and it converts the tool's weakest point into its most defensible one, because answers come back from parents and become the seed of a school-level corpus that no incumbent can replicate.</p>
+
+    <p>For launch, depth beats breadth: the taxonomy, the preference engine, the diagnostic, the state layer for all 37 states, and 15 to 25 exemplar schools researched properly across public and private, each sourced to a document a parent can read. The failure mode to avoid is thin coverage of thousands of schools, which is the version that looks like a product, is wrong most of the time, and cannot be corrected.</p>
+
+    <p>Two open questions need resolving before build. The level 1 through 3 definitions in the AI policy continuum are not published in the secondary coverage and must be verified against the source database, since the taxonomy's middle depends on them. And the 5W Research private-school audit, whose four-part bar is the best private-school rubric available, comes from a public relations firm and covers twenty elite schools in two metros &mdash; the rubric is usable, the prevalence finding is not.</p>
+  </section>
+
+  <section>
+    <div class="eyebrow">Synthesis</div>
+    <h2>The category is forming faster than the record of it</h2>
+
+    <p>The through-line across all three layers is that the policy record is being produced faster than it is being read. States are converting voluntary guidance into statute, districts are writing policies that do not cite the guidance above them, and vendors are deploying platform AI into classrooms whose families are not told which tools their children use. Every actor is generating documents; nobody is reconciling them. The result is a field with abundant text and almost no legibility, which is precisely the condition under which an interpretation product beats a data product.</p>
+
+    <p>What is easy to miss is the timing asymmetry. The three-state conversion to enacted law will, within roughly two years, force districts to publish policies that today they can decline to write &mdash; West Virginia's proposed July 2027 default deadline is the clearest instance. That means the school-level corpus that cannot be assembled now becomes assemblable later, and the organization holding the taxonomy, the question set, and a base of parent-contributed answers when that happens is the one positioned to absorb it. Building the interpretation layer first is not a concession to thin data; it is the correct sequence for a category whose data is about to arrive.</p>
+  </section>
+
+  <div class="sources">
+    <div class="eyebrow">Sources</div>
+    <ul>
+      <li><a href="https://crpe.org/ai-disrupt-ed-13-states/">Center on Reinventing Public Education &mdash; state guidance counts and district tracking</a></li>
+      <li><a href="https://www.aiforeducation.io/ai-resources/state-ai-guidance">AI for Education &mdash; State AI Guidance for Education</a></li>
+      <li><a href="https://ballotpedia.org/AI_guidance_issued_by_state_departments_of_education">Ballotpedia &mdash; AI guidance issued by state departments of education</a></li>
+      <li><a href="https://www.future-ed.org/legislative-tracker-2026-state-ai-in-education-bills/">FutureEd &mdash; 2026 State AI in Education Legislative Tracker</a></li>
+      <li><a href="https://www.multistate.us/insider/2026/4/9/how-states-are-regulating-ai-in-education-this-legislative-session">MultiState &mdash; How States Are Regulating AI in Education (April 2026)</a></li>
+      <li><a href="https://excelined.org/2026/05/26/state-k-12-ai-policy-in-2026-milestones/">ExcelinEd &mdash; State K-12 AI Policy in 2026</a></li>
+      <li><a href="https://policy.aiandeducationstudio.com/">AI and Education Studio &mdash; The AI School Policy Database</a></li>
+      <li><a href="https://www.edsurge.com/news/study-the-national-ai-policy-landscape-in-k-12-education">EdSurge &mdash; The National AI Policy Landscape in K-12 Education</a></li>
+      <li><a href="https://www.edweek.org/technology/180-degree-turn-nyc-schools-goes-from-banning-chatgpt-to-exploring-ais-potential/2023/10">Education Week &mdash; NYC from banning ChatGPT to exploring AI</a></li>
+      <li><a href="https://www.techpolicy.press/in-the-us-caution-rules-on-ai-ahead-of-k12-school-year/">Tech Policy Press &mdash; Caution rules on AI ahead of the K-12 school year</a></li>
+      <li><a href="https://www.prnewswire.com/news-releases/new-survey-when-choosing-a-school-for-their-children-majority-of-parents-consider-artificial-intelligence-policies-302846600.html">National School Choice Awareness Foundation &mdash; parent survey, July 2026</a></li>
+      <li><a href="https://www.edweek.org/technology/how-do-parents-want-schools-to-handle-ai-insights-from-a-new-survey/2026/03">Education Week &mdash; How Do Parents Want Schools to Handle AI?</a></li>
+      <li><a href="https://www.wbur.org/news/2026/01/21/parent-poll-ai-use-schools-massachusetts">WBUR &mdash; Massachusetts parent poll on AI in schools</a></li>
+      <li><a href="https://www.edchoice.org/2026-parents-divided-on-technology-and-student-preparation-for-life-after-graduation/">EdChoice &mdash; Parents Divided on Technology (2026)</a></li>
+      <li><a href="https://digitalpromise.org/initiative/artificial-intelligence-in-education/ai-literacy/strategies-to-promote-ai-literacy-in-k-12/">Digital Promise &mdash; AI Literacy framework and K-12 strategies</a></li>
+      <li><a href="https://www.nais.org/resource-center/resources/ai-resources-for-schools-and-educators/">NAIS &mdash; AI Resources for Schools and Educators</a></li>
+      <li><a href="https://www.prnewswire.com/news-releases/harvard-westlake-dalton-and-horace-mann-named-the-only-three-schools-meeting-institutional-ai-bar-302780395.html">5W Research &mdash; American Private School AI Study 2026</a></li>
+      <li><a href="https://exeter.edu/teaching-in-the-age-of-ai/">Phillips Exeter Academy &mdash; Teaching in the Age of AI</a></li>
+      <li><a href="https://www.niche.com/k12/compare/">Niche &mdash; K-12 Compare tool</a></li>
+      <li><a href="https://sonomos.ai/blog/ferpa-ai-chatgpt-claude-schools-edtech-2026/">FERPA and AI &mdash; school-official designation and enterprise tier requirements</a></li>
+    </ul>
+  </div>
+
+</div>
